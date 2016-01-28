@@ -1,6 +1,8 @@
 if (Meteor.isClient) {
-    Template.login.events({
-    });
+    if(!Meteor.currentUser()){
+        
+    }
+    
 }
 
 

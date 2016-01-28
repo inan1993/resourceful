@@ -1,3 +1,1 @@
-Router.configure({
-    layoutTemplate: 'layout'
-});
+
