@@ -3,7 +3,7 @@ Router.configure({
     onBeforeAction: function () {
         if (!Meteor.user()) {
             console.log("Rendering");
-            this.render('login');
+            this.render('createaccount');
         } else {
             console.log("not render");
             this.next();
