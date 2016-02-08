@@ -41,6 +41,13 @@ Router.route('/prof/:_id',{
     }
 });
 
+Router.route('/resource/:_id',{
+    name: 'resource',
+    data: function () {
+      return Meteor.resources.findOne({_id: this.params._id});
+    }
+});
+
 Router.route('/users', {
     name: 'users'
 });
