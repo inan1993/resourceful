@@ -1,0 +1,11 @@
+<template name="addresource">
+    {{#autoForm collection="Resources" id="insertResourceForm" type="insert" resetOnSuccess="true"}}
+    <fieldset>
+        <legend>Add a Resource</legend>
+        {{> afQuickField name='name'}}
+        {{> afQuickField name='description' rows=6}}
+        {{> afQuickField name='tags'}}
+    </fieldset>
+    <button type="submit" class="btn btn-primary">Add Resource</button>
+    {{/autoForm}}
+</template>

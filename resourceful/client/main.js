@@ -1,4 +1,4 @@
-if (Meteor.isClient()) {
+if (Meteor.isClient) {
     toastr.options = {
         "positionClass": "toast-bottom-right",
     }
