@@ -9,7 +9,6 @@ Router.configure({
                 this.render('landingpage');
             }
         } else {
-            console.log("not render");
             this.next();
         }
     }

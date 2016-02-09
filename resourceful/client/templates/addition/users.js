@@ -1,16 +1,24 @@
 Template.users.events({
-    'submit #create-user-form': function (event) {
+    'submit #create-user-form': function (event, template) {
         event.preventDefault();
+        // Auto-encrypts password, logs user in if successful
+        var emailVar = event.target.email.value;
+        var passVar = event.target.password.value;
+        var nameVar = event.target.name.value;
+        var adminVar = template.find('input:radio[name=isAdmin]:checked').value;
+        console.log(adminVar);
         var user = {
-            email: event.target.email.value,
-            password: event.target.password.value,
-            name: event.target.name.value
-        }
+            email: emailVar,
+            password: passVar,
+            name: nameVar,
+            // profile: adminVar
+        } 
         Meteor.call('addUser', user, function (err, result) {
-            if (err) {
-                toastr.error(err.reason);
+            if (!err) {
+                toastr.success("User "+ emailVar + " added!");
+                template.find("form").reset();
             } else {
-                toastr.success("Added user " + name + "!");
+                console.log(err.reason);
             }
         });
     }

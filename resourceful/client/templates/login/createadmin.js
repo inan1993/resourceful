@@ -4,7 +4,7 @@ Template.createadmin.events({
         // Auto-encrypts password, logs user in if successful
         var emailVar = event.target.email.value;
         var passVar = event.target.password.value;
-        Meteor.call(addUser, {
+        Meteor.call('addUser', {
             email: emailVar,
             password: passVar,
             name: "admin"
