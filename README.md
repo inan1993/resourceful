@@ -1,6 +1,10 @@
 # Resourceful LLC
 ### A resource reservation system for ECE 458: Engineering Software for Maintainability 
 
+> Instructions:
+url: resourceful.meteor.com
+credentials: admin@admin.com, password: admin
+
 ## Team Logistics
 Slack Group
 https://crustybarnacle.slack.com
