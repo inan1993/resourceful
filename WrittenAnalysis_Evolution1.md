@@ -7,7 +7,20 @@ As this is the first evolution of the project, all of the design decisions are f
 The Meteor framework is a pure Javascript framework utilizing the MEAN stack. Having a full stack bundled in a single Framework simplfied a lot of the design questions for us. The program is broken into client and server-side code and the data, referred to as Collections, are stored in a MongoDB with the Schemas acessible in the lib directory. Meteor has built in interfaces for smooth stack integration and provides CRUD services for easy database manipulation.
 
 #### The Client
-The UI is a dashboard with a calendar view that can display reservations. Reservations, resources, and users are stored in three different collections. Keeping them separated allows us to easy change the core functionality or add another key component in future evolutions without too much untangling to do. 
+Meteor uses a template/stylesheet model on its client. Each template groups a modular piece of HTML and its corresponding Javascript file together. By established convention, Meteor applies the Javascript file to the HTML file which have shared names. Stylesheets are separated from templates and contains all the CSS for the DOM elements of the templates. The only template that is not contained in the template folder is the main page. The main page contains all website globals, such as tab title, background and any other future features which is eligible to be applied to all template pages.
+
+##### Login Template
+Login is broken into two pieces: The initial Admin Creation and all the subsequent logins. Both login directs to Dashboard which is also the root page of this website. The Javascript on these two templates both direct to server side code which handles password encryption and email confirmations.
+
+##### Dashboard Template
+The Dashboard template Allows Admin to add users as well as manage resources. Users are able to search for resources on the Dashboard. Adding users and resources call upon Javascript which create new Objects in the MongoDB. The operations are simple with CRUD already incorporated in Meteor. On the contrary, users searching for resouces were more problematic. Our approach for this evolution was to use regex expressions to match the tags and enable searching. Regex has major draw backs in terms of readability of code as well as flexibility and scalability for future tags. It was chosen because it is powerful under simpler circumstances of tag matching for this Evolution. Further evolutions will investigate other forms of searching and tag addition.
+
+##### Addition Template
+True to its name, Addition allows you to add resources, the as a future possibility, more than one admin. Auto notifications are sent via Toastr on success or failure of resource reservation. The Javascript for adding additional Admins partly overlap with the createAdmin Javascript page. This provides for future possibilities of refactoring the code. However, attempts at refactoring would most probably require reorganizing template groups in order to adhere to Meteor framework structure.
+
+##### Other Templates
+The Layout Template is similar to main. Currently, it contains a Navbar which is persistent across all pages. The Application Template takes care of user errors. It contains enrollAccount which allows users to reset their passwords as well as a custom Forbidden page for users attempting to access Admin Priveleges. Finally, the landing page is a handy construction page which we will direct visitors to when the site is under construction.
+
 
 #### The Server
 
