@@ -1,6 +1,5 @@
 var resourceHooks = {
     after: {
-    // Replace `formType` with the form `type` attribute to which this hook applies
     insert: function(error, result) {
         if(error){
             toastr.error(error);

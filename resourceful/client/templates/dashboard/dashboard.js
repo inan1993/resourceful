@@ -1,11 +1,12 @@
 var options = {
     keepHistory: 1000 * 60 * 5,
-    localSearch: true
+    localSearch: false
 };
 var fields = ['tags'];
 
 var TagsSearch = new SearchSource('tags', fields, options);
 
+// TODO: make it so homepage doesn't need refreshing post change to collection
 Template.dashboard.rendered = function () {
     TagsSearch.search('');
 };
@@ -19,7 +20,7 @@ Template.dashboard.helpers({
         });
 }
 });
-
+// Add a tracker.autorun to automatically rerun search when data source changes
 Template.dashboard.events({
     'click .list-group-item': function (event) {
         event.preventDefault();
@@ -27,9 +28,16 @@ Template.dashboard.events({
             _id: this._id
         });
     },
-    // So hacky, due to a bad choice of using meteor's search source
     'keyup #search-box': _.throttle(function (e) {
         var text = $(e.target).val().trim();
             TagsSearch.search(text);
-    }, 200)
+    }, 200),
+    'click #users': function (event) {
+        event.preventDefault();
+        Router.go('users');
+    },
+    'click #resources': function (event) {
+        event.preventDefault();
+        Router.go('addresource');
+    }
 });

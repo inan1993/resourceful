@@ -20,5 +20,6 @@ Template.login.events({
         console.log("logging out");
         event.preventDefault();
         Meteor.logout();
+        Router.go('/');
     }
 });

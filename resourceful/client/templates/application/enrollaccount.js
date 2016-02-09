@@ -3,7 +3,8 @@ Template.enrollaccount.events({
         event.preventDefault();
         // Auto-encrypts password, logs user in if successful
         var passVar = event.target.password.value;
-        Accounts.resetPassword(token, password, function (err) {
+        var tokenVar = Session.get('_resetPasswordToken');
+        Accounts.resetPassword(tokenVar, passVar, function (err) {
             if(err){
                 toastr.error(err.reason);
             }
@@ -11,7 +12,6 @@ Template.enrollaccount.events({
                 toastr.success("Password set!")
                 Router.go("dashboard");
             }
-        
       })
     }
 });

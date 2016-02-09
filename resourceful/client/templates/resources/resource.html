@@ -1,0 +1,40 @@
+<template name="resource">
+    {{#if isInRole 'admin'}}
+    <div class="well">
+        <h4>Admin Configuration</h4>
+        <div class="row">
+            <div class="col-sm-4">
+            </div>
+            <div class="col-sm-4 text-center">
+                <button class="btn btn-default" id="edit-resource">Edit Resource</button>
+            </div>
+            <div class="col-sm-4">
+            </div>
+        </div>
+    </div>
+    {{/if}}
+    <div class="row">
+        <div class="col-sm-4">
+        </div>
+        <div class="col-sm-4 text-center">
+            <h4>Calendar for {{name}}</h4>
+            <p>{{description}}</p>
+        </div>
+        <div class="col-sm-4">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-8">
+            {{>fullcalendar id="resourceCalendar" defaultView="agendaWeek" events=events eventClick=onEventClicked header=calendarHeader}}
+        </div>
+        <div class="col-xs-4">
+            {{#autoForm collection="Reservations" id="insertReservationForm" type="insert" resetOnSuccess="true"}}
+            <fieldset>
+                <legend>Add a Reservation</legend>
+                {{> afQuickField name="start" type='datetime-local'}} {{> afQuickField name="end" type='datetime-local'}} {{> afQuickField name='description' rows=6}}
+            </fieldset>
+            <button type="submit" class="btn btn-primary">Reserve!</button>
+            {{/autoForm}}
+        </div>
+    </div>
+</template>

@@ -1,0 +1,12 @@
+<template name="reservation">
+    {{#autoForm collection="Reservations" doc=this id="updateReservationForm" type="update"}}
+    <fieldset>
+        <legend>Edit Reservation</legend>
+        {{> afQuickField name="start" type='datetime-local' }}
+        {{> afQuickField name="end" type='datetime-local' }}
+        {{> afQuickField name='description' rows=6}}
+    </fieldset>
+    <button type="submit" class="btn btn-primary" id="updateReservation">Update</button>
+    {{> quickRemoveButton collection="Reservations" _id=this._id onSuccess=onSuccess beforeRemove=beforeRemove class="btn btn-danger"}}
+    {{/autoForm}}
+</template>

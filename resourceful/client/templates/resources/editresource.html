@@ -1,0 +1,12 @@
+<template name="editresource">
+    {{#autoForm collection="Resources" doc=this id="updateResourceForm" type="update"}}
+    <fieldset>
+        <legend>Edit Resource</legend>
+        {{> afQuickField name='name'}}
+        {{> afQuickField name='description' rows=6}}
+        {{> afQuickField name='tags'}}
+    </fieldset>
+    <button type="submit" class="btn btn-primary" id="updateResource">Update</button>
+    {{> quickRemoveButton collection="Resources" _id=this._id onSuccess=onSuccess beforeRemove=beforeRemove class="btn btn-danger"}}
+    {{/autoForm}}
+</template>

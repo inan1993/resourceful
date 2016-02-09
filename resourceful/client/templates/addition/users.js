@@ -3,14 +3,13 @@ Template.users.events({
         event.preventDefault();
         var user = {
             email: event.target.email.value,
-            password: event.target.password.value,
-            name: event.target.name.value
         }
         Meteor.call('addUser', user, function (err, result) {
             if (err) {
                 toastr.error(err.reason);
             } else {
-                toastr.success("Added user " + name + "!");
+                toastr.success("Added user!");
+                toastr.warning("They should check their email to enroll!");
             }
         });
     }

@@ -1,6 +1,10 @@
+Accounts.urls.enrollAccount = function(token){
+        return Meteor.absoluteUrl("enroll/" + token);
+};
 Accounts.onCreateUser(function (options, user) {
     var userId = user._id = Random.id();
     console.log(Meteor.users.find().count());
+    if(Meteor.users.find().count() == 0){
     var handle = Meteor.users.find({
         _id: userId
     }, {
@@ -20,20 +24,14 @@ Accounts.onCreateUser(function (options, user) {
             handle.stop();
         }
     }, 30000);
+    }
     return user;
 });
 
 Meteor.methods({
-
     addUser: function (userToAdd) {
-        // FOR NOW, EVERYONE HAS PASSWORD PASSWORD.  UNCOMMENT THIS LINE TO PROMPT WITH AN EMAIL
-        var userId = Accounts.createUser({
-            email: userToAdd.email,
-            name: userToAdd.name,
-            password: "password"
-        });
-        // UNCOMMENT ME, PLEASE, and add logic to handle
-        // Accounts.sendEnrollmentEmail(userId, [email])
+        var userId = Accounts.createUser(userToAdd);
+        Accounts.sendEnrollmentEmail(userId);
     }
 });
 
