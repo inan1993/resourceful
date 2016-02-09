@@ -1,8 +1,5 @@
-An evaluation of your current design, with an analysis of its strengths and weaknesses
-going forwards. This section should justify your current design choices, explaining why
-you think they will be beneficial to you in the long run. If you recognize weaknesses in
-your current design, you should discuss them—including an explanation of why they are
-there, and how you plan to fix them in future submissions.
+# Written Analysis for Evolution 1
+## Resourceful LLC
 
 As this is the first evolution of the project, all of the design decisions are focused on laying the initial foundation for the software. The large design choices we made were to make our application web-based and to use the Meteor framework. 
 
