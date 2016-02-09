@@ -17,7 +17,7 @@ Template.dashboard.helpers({
                 isoScore: 1
             }
         });
-}
+    }
 });
 
 Template.dashboard.events({

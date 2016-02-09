@@ -5,7 +5,7 @@ Template.users.events({
         var emailVar = event.target.email.value;
         var passVar = event.target.password.value;
         var nameVar = event.target.name.value;
-        var adminVar = template.find('input:radio[name=isAdmin]:checked').value;
+        // var adminVar = template.find('input:radio[name=isAdmin]:checked').value;
         console.log(adminVar);
         var user = {
             email: emailVar,
