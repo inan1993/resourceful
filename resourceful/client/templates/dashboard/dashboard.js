@@ -4,7 +4,7 @@ var options = {
 };
 var fields = ['tags'];
 
-var TagsSearch = new SearchSource('tags', fields, options);
+var TagsSearch = new SearchSource('resources', fields, options);
 
 Template.dashboard.rendered = function () {
     TagsSearch.search('');

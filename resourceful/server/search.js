@@ -1,4 +1,4 @@
-SearchSource.defineSource('tags', function(searchText, options) {
+SearchSource.defineSource('resources', function(searchText, options) {
   var options = {sort: {isoScore: -1}, limit: 20};
 
   if(searchText) {
