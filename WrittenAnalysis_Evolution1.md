@@ -23,15 +23,23 @@ The Layout Template is similar to main. Currently, it contains a Navbar which is
 
 
 #### The Server
+The server handles user authentication and database searches. These are simple Javascript files which rely on Node.js. Hence, Meteor uses solely encrypted https exchanges.
+
+##### Search.js
+Parse tags by Regex and then performs database searches. Regex drawback has been previously discussed and will come under consideration if there are further developments in searchng functionality in furture evolutions.
+
+##### User-Config.js
+The core logic here is to verfiy uniqeness of user account and encryption of passwords which the Accounts package of Metoer does automatically with hashes and salts. Admin priveleges are assigned here. As of current evolution, email is still under development. However, there are concrete plans for using a scheduler and a third party mail server. One area of testing which we will consider in future evolutions is the correlation of load and server speed.
 
 #### The Database
 Storage of all the collections (resources, users, reservations) is all with a MongoDB database (again Meteor does all the configurations for this under the hood). The benefit of using MongoDB is that adding fields to entries is easy -- it is schema-less and that one can index on any field of a document with MongoDB. We are certain than in future evolutions, we will need to store more/different types of information. Using MongoDB renders our data storage process extremely extensible. 
 
-Various functioncal components of the application such as having user accounts, the login function, and the calendar are all modular pieces with a simple APIs to interface between one another. The core of these features are packages built-on/installable in Meteor, so all that we had to do as programmers was connect the html and call the built-in funcitons where appropriate. There is a significant amount of logic that we built on top of these components (controlling access to admin-only pages, creating new reservations properly, and so on). We chose to 
+### Testing
+As of now, we are consistenly printing state to console to keep track of development and making use of toastr notification for client facing events. In future, we may wish to look into web testing tools.
 
-### Thoughts on product design
+### Thoughts on product design and the Meteor Framework
 Our design is powerful because our framework is incredibly powerful and we kept our program modularized and simple. 
 
-It's hard to find serious issues with our design since so far there have been simple, effective ways to code every single component that we need while mainting moduarity of features and thus extensibility. There are a few small drawbacks. For instance, some of the default behaviour in the Meteor packages that we used do not behave entirely as expected, and with just the API method at our disposal it can be difficult to find work arounds. One specific example of this was that in the login Meteor package, calling the createUser() function autmatically logs the new user in upon sucessful creation. However, since our admin is creating the users, we don't want that funcitonality. Learning how to alter this behaviour required research and extra work. However, overall the benefits of using the prebuilt Meteor package certainly outweigh the time that would be required to build say, and entire login feature from scratch (and it would be redundant since it has already been developed a thousand times over across the world of computer science). 
+Various functional components of the application such as having user accounts, the login function, and the calendar are all modular pieces with a simple APIs to interface between one another. The core of these features are packages built-on/installable in Meteor, so all that we had to do as programmers was connect the html and call the built-in funcitons where appropriate. However, there is a significant amount of logic that we built on top of these components (controlling access to admin-only pages, creating new reservations properly, and so on).
 
-### Looking forward
+It's hard to find serious issues with our design since so far there have been simple, effective ways to code every single component that we need while mainting moduarity of features and thus extensibility. There are a few small drawbacks. For instance, some of the default behaviour in the Meteor packages that we used do not behave entirely as expected, and with just the API method at our disposal it can be difficult to find work arounds. One specific example of this was that in the login Meteor package, calling the createUser() function autmatically logs the new user in upon sucessful creation. However, since our admin is creating the users, we don't want that funcitonality. Learning how to alter this behaviour required research and extra work. However, overall the benefits of using the prebuilt Meteor package certainly outweigh the time that would be required to build say, and entire login feature from scratch (and it would be redundant since it has already been developed a thousand times over across the world of computer science). 
