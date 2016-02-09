@@ -18,7 +18,7 @@ Template.dashboard.helpers({
                 isoScore: 1
             }
         });
-}
+    }
 });
 // Add a tracker.autorun to automatically rerun search when data source changes
 Template.dashboard.events({
