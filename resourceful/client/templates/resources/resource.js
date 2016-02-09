@@ -32,8 +32,40 @@ var reserveHooks = {
                 toastr.error(error);
                 console.log(error);
             } else {
-                console.log(result);
+                var added = Reservations.findOne({
+                    _id: result
+                });
                 toastr.success('Reserved!');
+                var startDetails = {
+                    from: "team@resourceful.com",
+                    to: added.email,
+                    subject: "Reservation Starting!",
+                    text: "Hello, your reservation is starting now!",
+                    date: added.start
+                }
+                var endDetails = {
+                        from: "team@resourceful.com",
+                        to: added.email,
+                        subject: "Reservation Starting!",
+                        text: "Hello, your reservation is ending now!",
+                        date: added.end
+                }
+                // async callback to add key to database
+                Meteor.call('scheduleMail', startDetails, function (error, result) {
+                    if (!error) {
+                        Reservations.update(added, {
+                            startId: result
+                        });
+                    }
+                });
+                Meteor.call('scheduleMail', endDetails, function (error, result) {
+                    if (!error) {
+                        Reservations.update(added, {
+                            endId: result
+                        });
+                    }
+                });
+
             }
         }
     }
@@ -44,11 +76,11 @@ AutoForm.addHooks('insertReservationForm', reserveHooks);
 
 
 Template.resource.helpers({
-    calendarHeader: function() {
+    calendarHeader: function () {
         return {
-          left: 'prev,next,today',
-          center: 'title',
-          right: 'month,agendaWeek,agendaDay'
+            left: 'prev,next,today',
+            center: 'title',
+            right: 'month,agendaWeek,agendaDay'
         }
     },
     events: function () {
