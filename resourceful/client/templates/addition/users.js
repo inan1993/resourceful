@@ -7,18 +7,18 @@ Template.users.events({
         var nameVar = event.target.name.value;
         var adminVar = template.find('input:radio[name=isAdmin]:checked').value;
         console.log(adminVar);
-        Accounts.createUser({
+        var user = {
             email: emailVar,
             password: passVar,
             name: nameVar,
-            profile: adminVar
-        }, function (err) {
+            // profile: adminVar
+        } 
+        Meteor.call('addUser', user, function (err, result) {
             if (!err) {
                 toastr.success("User "+ emailVar + " added!");
                 template.find("form").reset();
             } else {
                 console.log(err.reason);
-                toastr.error(err.reason);
             }
         });
     }

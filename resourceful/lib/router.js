@@ -14,10 +14,13 @@ Router.configure({
     }
 });
 
+//Set default display page to dashboard
 Router.route('/', {
     name: 'dashboard'
 });
-
+Router.route('addresource', {
+    name: 'addresource'
+});
 
 Router.onBeforeAction(function(){
         if(Roles.userIsInRole(Meteor.user(), ['admin'])){
@@ -27,9 +30,22 @@ Router.onBeforeAction(function(){
             this.render('forbidden');
         }
     }, {
-  only: ['users']
+  only: ['users', 'addresource']
 });
 
+Router.route('/prof/:_id',{
+    name: 'profile',
+    data: function () {
+      return Meteor.users.findOne({_id: this.params._id});
+    }
+});
+
+Router.route('/resource/:_id',{
+    name: 'resource',
+    data: function () {
+      return Meteor.resources.findOne({_id: this.params._id});
+    }
+});
 
 Router.route('/users', {
     name: 'users'
