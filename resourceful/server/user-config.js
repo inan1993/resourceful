@@ -32,6 +32,18 @@ Meteor.methods({
     addUser: function (userToAdd) {
         var userId = Accounts.createUser(userToAdd);
         Accounts.sendEnrollmentEmail(userId);
+    },
+    makeUserManager: function(user){
+        console.log(user);
+        Roles.addUsersToRoles(user._id, ['userManager']);
+    },
+    makeResourceManager: function(user){
+        console.log(user);
+        Roles.addUsersToRoles(user._id, ['resourceManager']);
+    },
+    makeReservationManager: function(user){
+        console.log(user);
+        Roles.addUsersToRoles(user._id, ['reservationManager']);
     }
 });
 
@@ -45,3 +57,4 @@ Accounts.validateNewUser(function (user) {
     }
     throw new Meteor.Error(403, "Not authorized to create new users");
 });
+

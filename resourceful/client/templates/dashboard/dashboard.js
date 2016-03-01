@@ -36,6 +36,10 @@ Template.dashboard.events({
         event.preventDefault();
         Router.go('users');
     },
+    'click #groups': function (event) {
+        event.preventDefault();
+        Router.go('groupslist');
+    },
     'click #resources': function (event) {
         event.preventDefault();
         Router.go('addresource');
