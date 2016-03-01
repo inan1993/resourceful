@@ -1,4 +1,20 @@
 
+
+
+Meteor.loginAsDuke = function(netid, callback) {
+  //create a login request with admin: true, so our loginHandler can handle this request
+  var loginRequest = {duke: true, netID: netid};
+
+  //send the login request
+  Accounts.callLoginMethod({
+    methodArguments: [loginRequest],
+    userCallback: callback
+  });
+};
+
+
+
+/*
 var myApp = {
   "clientSecret": "Xcp6BJ%CVxnkaG3cogGWIWA@DJxY@cm*uv*TRWofQHo$ovDnJ+",
   "displayName": "Resourceful",
@@ -20,56 +36,4 @@ var myApp = {
         }
     ]
 };
-
-function getParameterByName(name) {
-    var url = window.location.href;
-    name = name.replace(/[\[\]]/g, "\\$&");
-    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-        results = regex.exec(url);
-    if (!results) return null;
-    if (!results[2]) return '';
-    return decodeURIComponent(results[2].replace(/\+/g, " "));
-}
-
-function getToken() {
-    var token = getParameterByName('access_token');
-    if (!token) {
-        window.location = "https://oauth.oit.duke.edu/oauth/authorize.php"
-        + "?client_id=" + myApp.clientId
-        + "&state=" + Math.random()
-        + "&response_type=token"
-        + "&redirect_uri=" + myApp.redirectURIs[0];//change this to redirect other places!
-    }
-    return token;
-}
-
-
-
-
-//server
-/*
-var https = require('https');
-//just omit the callback if you want to use it as a promise
-function getNetid(token, callback) {
-    return new Promise((resolve, reject) => {
-        var data = '';
-        https.get('https://oauth.oit.duke.edu/oauth/resource.php?access_token=' + token, (res) => {
-            res.on('data', (d) => {
-                data += d;
-            });
-            res.on('end', () => {
-                resolve(JSON.parse(data));
-            });
-            res.on('error',(err) => {reject(err);});
-        }
-    }).then(callback);
-}
 */
-
-
-Template.oauth.onRendered(function(){
-  var result = getToken();
-  //Meteor.call()
-  console.log(result);
-});
-

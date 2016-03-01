@@ -28,8 +28,8 @@ Template.login.events({
         + "&state=" + Math.random()
         + "&response_type=token"
         + "&redirect_uri=" + "http://localhost:3000/oauth"; 
-
-          //  Router.go('/');
+            //IN DEPLOYMENT CHANGE FROM LOCAL HOST TO RESOURCEFUL.METEOR.COM/OAUTH
+     
     },
 
     'click #logout-button': function (event) {
