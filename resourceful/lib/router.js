@@ -112,6 +112,9 @@ Router.onBeforeAction(function(){
 });
 
 Router.onBeforeAction(function(){
+        if(_.contains(Resources.findOne(Router.current().params._id).cannotView, Meteor.user().emails[0].address)) {
+             this.render('forbidden');
+        }
         if(Resources.findOne({_id: this.params._id})){
             this.next();
         }
@@ -171,6 +174,7 @@ Router.route('/resource/:_id',{
     data: function () {
       return Resources.findOne({_id: this.params._id});
     }
+    
 });
 
 Router.route('/group/:_id',{
