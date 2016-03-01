@@ -11,13 +11,12 @@ if (Meteor.isServer) {
   // /api/items/:id for the Items collection
   Api.addCollection(Reservations);
   Api.addCollection(Resources);
-  //collections that are generated automatically by another library cant be linked
-  //Api.addCollection(roles);
+  Api.addCollection(Meteor.roles);
 
   // Generates: POST on /api/users and GET, DELETE /api/users/:id for
   // Meteor.users collection
   Api.addCollection(Meteor.users, {
-    excludedEndpoints: ['getAll', 'put'],
+    //excludedEndpoints: ['getAll', 'put'],
     routeOptions: {
       authRequired: true
     },
