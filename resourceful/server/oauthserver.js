@@ -9,8 +9,8 @@ var myApp = {
         "ssm33@duke.edu"
     ],
     "redirectURIs": [
-        "https://localhost:3000/oauth"
-        //"https://resourceful2.meteor.com/oauth"
+        // "https://localhost:3000/oauth"
+        "https://resourceful.meteor.com/oauth"
       
     ],
     "permissions": [
