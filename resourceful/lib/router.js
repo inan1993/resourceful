@@ -10,6 +10,44 @@ Router.route('add', {
     name: 'addresource'
 });
 
+Router.route('oauth', {
+    name: 'oauth'
+});
+
+
+Router.onBeforeAction(function(){
+     var hash = this.params.hash;
+     
+
+     if(hash != null){
+
+     hashsplit = hash.split("&", 1).toString();
+     token = hashsplit.split("=");
+     token = token[1];
+     console.log(token);
+
+     var res_json = '';
+     Meteor.call("getNetid", token, function (error, result) {
+      res_json = result;
+     });
+ 
+      console.log(res_json);
+      console.log("test");
+
+        //PARSE JSON HERE OR IF IT DOESNT WORK IN SERVER
+     this.next();
+   } else{
+
+    console.log("hash is null");
+    this.next();
+   }
+
+
+
+    }, {
+  only: ['oauth']
+});
+
 Router.onBeforeAction(function(){
         if (!Meteor.user()) {
             if(Meteor.users.find().count() == 0){
