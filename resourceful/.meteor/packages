@@ -35,3 +35,4 @@ meteorhacks:search-source
 aldeed:delete-button
 email
 percolate:synced-cron
+nimble:restivus@=0.8.5
