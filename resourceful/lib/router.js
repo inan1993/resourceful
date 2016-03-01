@@ -90,14 +90,14 @@ Router.onBeforeAction(function(){
 });
 
 Router.onBeforeAction(function(){
-        if(Roles.userIsInRole(Meteor.user(), ['admin'])){
+        if(Roles.userIsInRole(Meteor.user(), ['admin','userManager'])){
             this.next();
         }
         else{
             this.render('forbidden');
         }
     }, {
-  only: ['users', 'addresource', 'editresource']
+  only: ['groupslist']
 });
 
 Router.onBeforeAction(function(){
@@ -119,7 +119,29 @@ Router.onBeforeAction(function(){
             this.render('forbidden');
         }
     }, {
-  only: ['resource','editresource']
+  only: ['resource']
+});
+
+Router.onBeforeAction(function(){
+        if(Roles.userIsInRole(Meteor.user(), ['admin','resourceManager'])){
+            this.next();
+        }
+        else{
+            this.render('forbidden');
+        }
+    }, {
+  only: ['editresource']
+});
+
+Router.onBeforeAction(function(){
+        if(Roles.userIsInRole(Meteor.user(), ['admin','user'])){
+            this.next();
+        }
+        else{
+            this.render('forbidden');
+        }
+    }, {
+  only: ['reservation']
 });
 
 Router.onBeforeAction(function(){
@@ -140,10 +162,21 @@ Router.route('/prof/:_id',{
     }
 });
 
+Router.route('/groups/',{
+    name: 'groupslist'
+});
+
 Router.route('/resource/:_id',{
     name: 'resource',
     data: function () {
       return Resources.findOne({_id: this.params._id});
+    }
+});
+
+Router.route('/group/:_id',{
+    name: 'editgroup',
+    data: function () {
+      return Groups.findOne({_id: this.params._id});
     }
 });
 

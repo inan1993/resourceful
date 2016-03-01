@@ -1,0 +1,18 @@
+<template name="groupslist">
+    <div class="row">
+    <h3>Add a new Group</h3>
+    {{> quickForm collection="Groups" id="insertGroupForm" type="insert" resetOnSuccess="true"}}
+    </div>
+    <div class="row">
+        <h3>Current Groups</h3>
+        <div class="list-group">
+            {{#each getGroups}}
+            <button type="button" class="list-group-item">
+                <h5 class="list-group-item-heading">{{name}}</h5>
+                {{#each member in members}}
+                <span class="badge">{{{member}}}</span> {{/each}}
+            </button>
+            {{/each}}
+        </div>
+    </div>
+</template>

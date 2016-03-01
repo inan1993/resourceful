@@ -1,12 +1,14 @@
 SearchSource.defineSource('tags', function(searchText, options) {
   var options = {sort: {isoScore: -1}, limit: 20};
-
+  var user = Meteor.users.find({_id: Meteor.userId()})
+  console.log(user.emails);
   if(searchText) {
     var regExp = buildRegExp(searchText);
-    var selector = {tags: {$in: [regExp]}};
+    
+    var selector = {$and: [{tags: {$in: [regExp]}}, {cannotView: {$in: [user.emails]}}]};
     return Resources.find(selector, options).fetch();
   } else {
-    return Resources.find({}, options).fetch();
+    return Resources.find({cannotView: {$in: [user.emails]}}, options).fetch();
   }
 });
 

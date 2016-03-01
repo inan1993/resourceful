@@ -83,6 +83,14 @@ Template.resource.helpers({
             right: 'month,agendaWeek,agendaDay'
         }
     },
+    canReserve: function () {
+        if (_.contains(Resources.findOne(Router.current().params._id).cannotReserve, Meteor.user().emails[0].address)) {
+            return false;
+        }
+        else{
+            return true;
+        }          
+    },
     events: function () {
         var fc = $('.fc');
         return function (start, end, tz, callback) {
@@ -111,7 +119,7 @@ Template.resource.helpers({
     onEventClicked: function () {
         return function (calEvent, jsEvent, view) {
             // Check if authorized
-            if (Roles.userIsInRole(Meteor.user(), ['admin']) || calEvent.userId == Meteor.userId()) {
+            if (Roles.userIsInRole(Meteor.user(), ['admin','reservationManager']) || calEvent.userId == Meteor.userId()) {
                 Router.go('reservation', {
                     _id: calEvent.id
                 });
