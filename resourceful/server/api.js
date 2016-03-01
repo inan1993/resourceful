@@ -22,7 +22,7 @@ if (Meteor.isServer) {
     },
     endpoints: {
       post: {
-        authRequired: false
+        authRequired: true
       },
       delete: {
         roleRequired: 'admin'
