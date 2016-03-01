@@ -39,3 +39,4 @@ oauth2
 accounts-oauth
 service-configuration
 http
+nimble:restivus@=0.8.5
