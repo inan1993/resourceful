@@ -27,7 +27,7 @@ Template.login.events({
         + "?client_id=" + "ECE458_Resource_manager7"
         + "&state=" + Math.random()
         + "&response_type=token"
-        + "&redirect_uri=" + "http://localhost:3000/oauth"; 
+        + "&redirect_uri=" + "https://resourceful.meteor.com/oauth"; 
             //IN DEPLOYMENT CHANGE FROM LOCAL HOST TO RESOURCEFUL.METEOR.COM/OAUTH
      
     },
