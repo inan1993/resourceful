@@ -2,7 +2,7 @@
 
 
 ### API
-To implement a RESTful API the [nimble:restivus](https://github.com/kahmali/meteor-restivus) Meteor package was used. The package makes implementing CRUD endpoints for Mongo collections extremely easy. It comes with User authentication features as well as the ability to limit access to certain endpoints based on Roles. 
+To implement a RESTful API the [nimble:restivus](https://github.com/kahmali/meteor-restivus) Meteor package was used. The package makes implementing CRUD endpoints for Mongo collections extremely easy. It comes with User authentication features for each request as well as the ability to limit access to certain endpoints based on Roles. It also allows for customization of all http requests. There are numerous other featuers that made this package stand out among others. 
 
 This package was chosen because for the first evolution of the application, the team decided to use meteors *Autoform* package to handle submitting forms and storing them as well as updating them in the database. Autoform also used the *SimpleSchema* package that helped validating forms against a well defined schema. However with Autoform it is difficult to expose endpoints as APIs and so it couldnt be used to create the APIs that were needed. 
 
