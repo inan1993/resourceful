@@ -11,68 +11,58 @@ Router.route('add', {
 });
 
 Router.route('oauth', {
-    name: 'oauth'
+    name: 'oauth',
+    data: function(){
+        console.log('Router = ' + this.params.hash);
+    }
 });
 
 
 Router.onBeforeAction(function(){
      //take everything after the hashtag, which contains access_token that will be exchanged for netid
      var hash = this.params.hash;
-     
 
-     if(hash != null){
+     if(hash == null){
+        console.log("hash is null");
+        this.render('landingpage');
+     }
+     else{
 
-     hashsplit = hash.split("&", 1).toString();
-     token = hashsplit.split("=");
-     token = token[1];
-     console.log(token);
+       hashsplit = hash.split("&", 1).toString();
+       token = hashsplit.split("=");
+       token = token[1];
+       console.log(token);
 
-     var res = '';
-     //getNetid defined in oauthserver.js
-     
-     try{
-      Meteor.call("getNetid", token, function(error, result){
-
-        res = result;
-        console.log("result " + res);
-      
-
+       var res = '';
+       //getNetid defined in oauthserver.js
+       
+      try{
+        Meteor.call("getNetid", token, function(error, result){
+          res = result;
+          console.log("NetID obtained = " + res);
+        });
       }
-        );
-
-      
-    } catch(e){
-      console.log(e);
-    }
-
-
-/*
-      Meteor.loginWithPassword(res, token, function (err) {
-            console.log("was called with "+ res + token);
-            if (Meteor.user()) {
-                console.log("logged");
-                Router.go('');
-            } else {
-                console.log(err.reason);
-                toastr.error(err.reason);
-            }
-
-          });
-
-*/
-
-     this.next();
-   } else {
-
-    console.log("hash is null");
-    this.render('landingpage');
-   }
-
-
-
-    }, {
-  only: ['oauth']
-});
+      catch(e){
+        console.log(e);
+      }
+  /*
+        Meteor.loginWithPassword(res, token, function (err) {
+              console.log("was called with "+ res + token);
+              if (Meteor.user()) {
+                  console.log("logged");
+                  Router.go('');
+              } else {
+                  console.log(err.reason);
+                  toastr.error(err.reason);
+              }
+            });
+  */
+      this.next();
+    } 
+  }, 
+  {
+    only: ['oauth']
+  });
 
 Router.onBeforeAction(function(){
         if (!Meteor.user()) {

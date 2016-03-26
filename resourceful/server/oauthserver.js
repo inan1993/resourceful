@@ -1,25 +1,24 @@
 
-var myApp = {
-  "clientSecret": "Xcp6BJ%CVxnkaG3cogGWIWA@DJxY@cm*uv*TRWofQHo$ovDnJ+",
-  "displayName": "Resourceful",
-  "description": "A resource reservation-system for ECE 458",
-  "ownerDescription": "Pratt Undergraduate Student, Class of 2016",
-  "privacyURL": "resourceful.meteor.com/privacy",
-    "appOwners": [
-        "ssm33@duke.edu"
-    ],
-    "redirectURIs": [
-        // "https://localhost:3000/oauth"
-        "https://resourceful.meteor.com/oauth"
-      
-    ],
-    "permissions": [
-        {
-            "service": "basic",
-            "access": "full"
-        }
-    ]
-};
+// var myApp = {
+//   "clientSecret": "Xcp6BJ%CVxnkaG3cogGWIWA@DJxY@cm*uv*TRWofQHo$ovDnJ+",
+//   "displayName": "Resourceful",
+//   "description": "A resource reservation-system for ECE 458",
+//   "ownerDescription": "Pratt Undergraduate Student, Class of 2016",
+//   "privacyURL": "resourceful.meteor.com/privacy",
+//     "appOwners": [
+//         "ssm33@duke.edu"
+//     ],
+//     "redirectURIs": [
+//         "http://localhost:3000/oauth"
+//         // "ec2-52-90-134-50.compute-1.amazonaws.com/oauth"
+//     ],
+//     "permissions": [
+//         {
+//             "service": "basic",
+//             "access": "full"
+//         }
+//     ]
+// };
 
 
 
