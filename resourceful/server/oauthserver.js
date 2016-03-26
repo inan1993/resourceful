@@ -25,12 +25,12 @@ Accounts.registerLoginHandler(function(loginRequest) {
     return undefined;
   }
   else{
-    // console.log('Login Handler Server2 ' + loginRequest);
+    console.log('Login Handler Server2 ' + loginRequest.netID);
     var user_Id = null;
-    var user = Meteor.users.findOne({username: loginRequest.netID});
+    var user = Meteor.users.findOne({emails: [loginRequest.netID]});
     if(!user) {
-      user_Id = Meteor.users.insert({username: loginRequest.netID},
-                                    {email: loginRequest.netID});
+      user_Id = Meteor.users.insert({emails: [loginRequest.netID]});
+      // Meteor.users.update(user_Id, {$set: {"emails.0.verified" : true}});
     } else {
       user_Id = user._id;
     }

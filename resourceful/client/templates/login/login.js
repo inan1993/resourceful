@@ -7,9 +7,7 @@ Template.login.events({
         var emailVar = event.target.email.value;
         var passVar = event.target.password.value;
         Meteor.loginWithPassword(emailVar, passVar, function (err) {
-            console.log("was called");
             if (Meteor.user()) {
-                console.log("logged");
                 Router.go('');
             } else {
                 console.log(err.reason);

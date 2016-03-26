@@ -12,14 +12,8 @@ Router.route('add', {
 
 Router.route('oauth', {
     name: 'oauth',
-    data: function(){
-        console.log('Router = ' + this.params.hash);
-    }
-});
-
-
-Router.onBeforeAction(function(){
-     //take everything after the hashtag, which contains access_token that will be exchanged for netid
+    onRun: function(){
+      //take everything after the hashtag, which contains access_token that will be exchanged for netid
      var hash = this.params.hash;
      if(hash == null){
         toastr.warning("Duke Authentication Failed!");
@@ -29,26 +23,29 @@ Router.onBeforeAction(function(){
        hashsplit = hash.split("&", 1).toString();
        token = hashsplit.split("=");
        token = token[1];
-       var res = '';
 
        //getNetid defined in oauthserver.js
-      try{
-        Meteor.call("getNetid", token, function(error, result){
-          res = result;
-          console.log("NetID obtained = " + res);
-        });
-      }
-      catch(e){
+       try{
+         Meteor.call("getNetid", token, function(error, result){
+          Meteor.loginAsDuke(result, function (err){
+            if (Meteor.user()) {
+                Router.go('/');
+            } else {
+                console.log(err.reason);
+                toastr.error(err.reason);
+            }
+          });
+          console.log('Finished routing OAuth');
+         });
+       }
+       catch(e){
         console.log(e);
-      }
+       }
+     }
       toastr.clear();
-      Meteor.loginAsDuke(res);
       this.next();
-    } 
-  }, 
-  {
-    only: ['oauth']
-  });
+    }
+});
 
 Router.onBeforeAction(function(){
         if (!Meteor.user()) {
