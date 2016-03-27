@@ -10,6 +10,43 @@ Router.route('add', {
     name: 'addresource'
 });
 
+Router.route('oauth', {
+    name: 'oauth',
+    onRun: function(){
+      //take everything after the hashtag, which contains access_token that will be exchanged for netid
+     var hash = this.params.hash;
+     if(hash == null){
+        toastr.warning("Duke Authentication Failed!");
+        this.render('landingpage');
+     }
+     else{
+       hashsplit = hash.split("&", 1).toString();
+       token = hashsplit.split("=");
+       token = token[1];
+
+       //getNetid defined in oauthserver.js
+       try{
+         Meteor.call("getNetid", token, function(error, result){
+          Meteor.loginAsDuke(result, function (err){
+            if (Meteor.user()) {
+                Router.go('/');
+            } else {
+                console.log(err.reason);
+                toastr.error(err.reason);
+            }
+          });
+          console.log('Finished routing OAuth');
+         });
+       }
+       catch(e){
+        console.log(e);
+       }
+     }
+      toastr.clear();
+      this.next();
+    }
+});
+
 Router.onBeforeAction(function(){
         if (!Meteor.user()) {
             if(Meteor.users.find().count() == 0){
@@ -26,14 +63,14 @@ Router.onBeforeAction(function(){
 });
 
 Router.onBeforeAction(function(){
-        if(Roles.userIsInRole(Meteor.user(), ['admin'])){
+        if(Roles.userIsInRole(Meteor.user(), ['admin','userManager'])){
             this.next();
         }
         else{
             this.render('forbidden');
         }
     }, {
-  only: ['users', 'addresource', 'editresource']
+  only: ['groupslist']
 });
 
 Router.onBeforeAction(function(){
@@ -48,6 +85,9 @@ Router.onBeforeAction(function(){
 });
 
 Router.onBeforeAction(function(){
+        if(_.contains(Resources.findOne(Router.current().params._id).cannotView, Meteor.user().emails[0].address)) {
+             this.render('forbidden');
+        }
         if(Resources.findOne({_id: this.params._id})){
             this.next();
         }
@@ -55,7 +95,29 @@ Router.onBeforeAction(function(){
             this.render('forbidden');
         }
     }, {
-  only: ['resource','editresource']
+  only: ['resource']
+});
+
+Router.onBeforeAction(function(){
+        if(Roles.userIsInRole(Meteor.user(), ['admin','resourceManager'])){
+            this.next();
+        }
+        else{
+            this.render('forbidden');
+        }
+    }, {
+  only: ['editresource']
+});
+
+Router.onBeforeAction(function(){
+        if(Roles.userIsInRole(Meteor.user(), ['admin','user'])){
+            this.next();
+        }
+        else{
+            this.render('forbidden');
+        }
+    }, {
+  only: ['reservation']
 });
 
 Router.onBeforeAction(function(){
@@ -76,10 +138,22 @@ Router.route('/prof/:_id',{
     }
 });
 
+Router.route('/groups/',{
+    name: 'groupslist'
+});
+
 Router.route('/resource/:_id',{
     name: 'resource',
     data: function () {
       return Resources.findOne({_id: this.params._id});
+    }
+    
+});
+
+Router.route('/group/:_id',{
+    name: 'editgroup',
+    data: function () {
+      return Groups.findOne({_id: this.params._id});
     }
 });
 

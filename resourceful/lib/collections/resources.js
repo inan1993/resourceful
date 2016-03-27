@@ -12,5 +12,15 @@ Resources.attachSchema(new SimpleSchema({
     description: {
         type: String,
         label: "Description",
+    },
+    cannotView: {
+        type: [String],
+        label: "Cannot View",
+        optional: true
+    },
+    cannotReserve: {
+        type: [String],
+        label: "Cannot Reserve",
+        optional: true
     }
 }));

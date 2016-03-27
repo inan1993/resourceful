@@ -17,6 +17,10 @@ var reservationHooks = {
                 toastr.error('Already reserved!');
                 return false;
             }
+            if (_.contains(Resources.findOne(Router.current().params._id).cannotReserve, Meteor.user().emails[0].address)) {
+                toastr.error('You cant reserve this!');
+                return false;
+            }
             return doc;
         }
     },

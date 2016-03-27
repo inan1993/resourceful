@@ -1,17 +1,32 @@
 <template name="dashboard">
-    {{#if isInRole 'admin'}} 
+    {{#if isInRole 'admin,userManager,resourceManager'}} 
     <div class="well">
         <h4>Admin Configuration</h4>
     <div class="row">
-        <div class="col-sm-4">
+        <div class="col-sm-2">
         </div>
+        {{#if isInRole 'admin,userManager'}}
         <div class="col-sm-2 text-center">
             <button class="btn btn-default" id="users">Add Users</button>
         </div>
+        <div class="col-sm-4 text-center">
+            <button class="btn btn-default" id="groups">Edit Groups</button>
+        </div>
+        {{else}}
+        <div class="col-sm-2 text-center">
+        </div>
+        <div class="col-sm-4 text-center">
+        </div>
+        {{/if}}
+        {{#if isInRole 'admin,resourceManager'}}
         <div class="col-sm-2 text-center">
             <button class="btn btn-default" id="resources">Add Resources</button>
         </div>
-        <div class="col-sm-4">
+        {{else}}
+        <div class="col-sm-2 text-center">
+        </div>
+        {{/if}}
+        <div class="col-sm-2">
         </div>
     </div>
     </div>

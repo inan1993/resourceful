@@ -47,6 +47,7 @@ function scheduleMail(details) {
 	if (details.date < new Date()) {
 		sendMail(details);
 	} else {
+        console.log("added");
 		var thisId = UpcomingReservations.insert(details);
 		addTask(thisId, details);		
 	}

@@ -1,0 +1,7 @@
+<template name="editgroup">
+    <div class="row">
+    <h3>Edit Group</h3>
+    {{> quickForm collection="Groups" doc=this id="updateGroupForm" type="update"}}
+    {{> quickRemoveButton collection="Groups" _id=this._id class="btn btn-danger"}}
+    </div>
+</template>
