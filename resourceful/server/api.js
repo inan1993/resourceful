@@ -11,41 +11,23 @@ if (Meteor.isServer) {
   // /api/items/:id for the Items collection
   Api.addCollection(Reservations);
   Api.addCollection(Resources);
-  Api.addCollection(Meteor.roles);
+  Api.addCollection(Meteor.users);
 
   // Generates: POST on /api/users and GET, DELETE /api/users/:id for
   // Meteor.users collection
-  Api.addCollection(Meteor.users, {
-    //excludedEndpoints: ['getAll', 'put'],
-    routeOptions: {
-      authRequired: true
-    },
-    endpoints: {
-      post: {
-        authRequired: true
-      },
-      delete: {
-        roleRequired: 'admin'
-      }
-    }
-  });
 
-  // Maps to: /api/articles/:id
-  Api.addRoute('articles/:id', {authRequired: true}, {
-    get: function () {
-      return Articles.findOne(this.urlParams.id);
-    },
-    delete: {
-      roleRequired: ['author', 'admin'],
-      action: function () {
-        if (Articles.remove(this.urlParams.id)) {
-          return {status: 'success', data: {message: 'Article removed'}};
-        }
-        return {
-          statusCode: 404,
-          body: {status: 'fail', message: 'Article not found'}
-        };
-      }
-    }
-  });
+// Api.addCollection(Meteor.users, {
+//   //excludedEndpoints: ['getAll', 'put'],
+//   routeOptions: {
+//     authRequired: true
+//   },
+//   endpoints: {
+//     post: {
+//       roleRequired: 'admin'
+//     },
+//     delete: {
+//       roleRequired: 'admin'
+//     }
+//   }
+// });
 }
