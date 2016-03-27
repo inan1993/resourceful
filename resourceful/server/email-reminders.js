@@ -1,6 +1,8 @@
 // Backend for chron scheduler, needs to be called with Meteor.call in both resources (when a reservation is made) and in reservations (when a reservation can be updated) to actually send the email notifications.  Based on: http://richsilv.github.io/meteor/scheduling-events-in-the-future-with-meteor/
 Meteor.startup(function() {
+	process.env.MAIL_URL="smtp://dukeresourceful%40gmail.com:HelloWorld@smtp.gmail.com:465/"; 
 	UpcomingReservations.find().forEach(function(mail) {
+
 		if (mail.date < new Date()) {
 			sendMail(mail)
             UpcomingReservations.remove(id);
