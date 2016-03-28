@@ -40,14 +40,14 @@ var reservationHooks = {
                     from: "team@resourceful.com",
                     to: added.email,
                     subject: "Reservation Starting!",
-                    text: "Hello, your reservation is starting now!",
+                    text: "Hello, your updated reservation is starting now!",
                     date: added.start
                 }
                 var endDetails = {
                         from: "team@resourceful.com",
                         to: added.email,
                         subject: "Reservation Starting!",
-                        text: "Hello, your reservation is ending now!",
+                        text: "Hello, your updated upreservation is ending now!",
                         date: added.end
                 }
                 // async callback to add key to database

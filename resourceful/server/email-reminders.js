@@ -4,7 +4,7 @@ Meteor.startup(function() {
 	UpcomingReservations.find().forEach(function(mail) {
 		if (mail.date < new Date()) {
 			sendMail(mail)
-            UpcomingReservations.remove(id);
+            UpcomingReservations.remove(mail._id);
 		} else {
 			addTask(mail._id, mail);
 		}
@@ -14,8 +14,8 @@ Meteor.startup(function() {
 });
 
 UpcomingReservations = new Meteor.Collection('upcomingreservations'); // server-side only
-Meteor.methods({
-	'sendMail':function(details) {
+
+function sendMail(details) {
 
 	    Email.send({
 	        from: details.from,
@@ -25,9 +25,8 @@ Meteor.methods({
 	    });
 	    
 	}
-});
-Meteor.methods({
-	'addTask':function(id, details) {
+
+function addTask(id, details) {
 
 		SyncedCron.add({
 			name: id,
@@ -43,8 +42,8 @@ Meteor.methods({
 		});
 
 	}
-});
-Meteor.methods({
+
+Meteor.methods({	
 	'scheduleMail':function(details) { 
 
 		if (details.date < new Date()) {
@@ -57,6 +56,7 @@ Meteor.methods({
 		return thisId;
 	}
 });
+
 Meteor.methods({
 	'cancelMail':function(id) { 
 		UpcomingReservations.remove(id);
