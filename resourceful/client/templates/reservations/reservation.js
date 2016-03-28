@@ -33,9 +33,7 @@ var reservationHooks = {
                 console.log(error);
             } else {
                 console.log("Updated!");
-                var added = Reservations.findOne({
-                    _id: result
-                });
+                var added = Reservations.findOne(Router.current().params._id);
                 Meteor.call('cancelMail', added.startEmailId);
                 Meteor.call('cancelMail', added.endEmailId);
                 var startDetails = {
