@@ -33,26 +33,23 @@ if (Meteor.isServer) {
     routeOptions: {
       authRequired: true
     },
-    endpoints: {
-      post: {
-        roleRequired: 'admin'
-      },
-      delete: {
-        roleRequired: 'admin'
-      }
-    }
-  });
-
-  Api.addCollection(Resources, {
-    // getAll: function () {
-    //   var userId = this.userId;
-    //   return Resources.find({ ownerID: userId}).pretty();
+    // endpoints: {
+    //   post: {
+    //     roleRequired: 'admin'
+    //   },
+    //   delete: {
+    //     roleRequired: 'admin'
+    //   }
     // }
-    routeOptions: {
-      authRequired: true
-    }
   });
+
+  // Api.addCollection(Resources, {
+  //   // getAll: function () {
+  //   //   var userId = this.userId;
+  //   //   return Resources.find({ ownerID: userId}).pretty();
+  //   // }
+  //   routeOptions: {
+  //     authRequired: true
+  //   }
+  // });
 }
-
-
-

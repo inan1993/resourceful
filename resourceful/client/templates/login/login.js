@@ -7,10 +7,13 @@ Template.login.events({
         var emailVar = event.target.email.value;
         var passVar = event.target.password.value;
         Meteor.loginWithPassword(emailVar, passVar, function (err) {
-            console.log("was called");
             if (Meteor.user()) {
+<<<<<<< HEAD
                 console.log("logged");
                 Router.go('/');
+=======
+                Router.go('');
+>>>>>>> d318e9abdea2a033fb3dd37d557c38978f97bcb1
             } else {
                 console.log(err.reason);
                 toastr.error(err.reason);
@@ -27,8 +30,9 @@ Template.login.events({
         + "?client_id=" + "ECE458_Resource_manager7"
         + "&state=" + Math.random()
         + "&response_type=token"
-        + "&redirect_uri=" + "https://resourceful.meteor.com/oauth"; 
-            //IN DEPLOYMENT CHANGE FROM LOCAL HOST TO RESOURCEFUL.METEOR.COM/OAUTH
+        + "&redirect_uri=" + 
+                            "http://localhost:3000/oauth"; 
+                            // "ec2-52-90-134-50.compute-1.amazonaws.com/oauth";
      
     },
 

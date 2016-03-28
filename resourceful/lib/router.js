@@ -11,67 +11,40 @@ Router.route('add', {
 });
 
 Router.route('oauth', {
-    name: 'oauth'
-});
-
-
-Router.onBeforeAction(function(){
-     //take everything after the hashtag, which contains access_token that will be exchanged for netid
+    name: 'oauth',
+    onRun: function(){
+      //take everything after the hashtag, which contains access_token that will be exchanged for netid
      var hash = this.params.hash;
-     
+     if(hash == null){
+        toastr.warning("Duke Authentication Failed!");
+        this.render('landingpage');
+     }
+     else{
+       hashsplit = hash.split("&", 1).toString();
+       token = hashsplit.split("=");
+       token = token[1];
 
-     if(hash != null){
-
-     hashsplit = hash.split("&", 1).toString();
-     token = hashsplit.split("=");
-     token = token[1];
-     console.log(token);
-
-     var res = '';
-     //getNetid defined in oauthserver.js
-     
-     try{
-      Meteor.call("getNetid", token, function(error, result){
-
-        res = result;
-        console.log("result " + res);
-      
-
-      }
-        );
-
-      
-    } catch(e){
-      console.log(e);
-    }
-
-
-/*
-      Meteor.loginWithPassword(res, token, function (err) {
-            console.log("was called with "+ res + token);
+       //getNetid defined in oauthserver.js
+       try{
+         Meteor.call("getNetid", token, function(error, result){
+          Meteor.loginAsDuke(result, function (err){
             if (Meteor.user()) {
-                console.log("logged");
-                Router.go('');
+                Router.go('/');
             } else {
                 console.log(err.reason);
                 toastr.error(err.reason);
             }
-
           });
-
-*/
-
-     this.next();
-   } else {
-
-    console.log("hash is null");
-    this.render('landingpage');
-   }
-
-
-
-    }, {
-  only: ['oauth']
+          console.log('Finished routing OAuth');
+         });
+       }
+       catch(e){
+        console.log(e);
+       }
+     }
+      toastr.clear();
+      this.next();
+    }
 });
 
 Router.onBeforeAction(function(){

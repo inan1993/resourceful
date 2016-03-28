@@ -17,10 +17,12 @@ var reservationHooks = {
                 toastr.error('Already reserved!');
                 return false;
             }
-            if (_.contains(Resources.findOne(Router.current().params._id).cannotReserve, Meteor.user().emails[0].address)) {
-                toastr.error('You cant reserve this!');
-                return false;
-            }
+            if(_.contains(Resources.findOne(Router.current().params._id))){
+                if (_.contains(Resources.findOne(Router.current().params._id).cannotReserve, Meteor.user().emails[0].address)) {
+                    toastr.error('You cant reserve this!');
+                    return false;
+                }
+             }
             return doc;
         }
     },
@@ -31,23 +33,21 @@ var reservationHooks = {
                 console.log(error);
             } else {
                 console.log("Updated!");
-                var added = Reservations.findOne({
-                    _id: result
-                });
+                var added = Reservations.findOne(Router.current().params._id);
                 Meteor.call('cancelMail', added.startEmailId);
                 Meteor.call('cancelMail', added.endEmailId);
                 var startDetails = {
                     from: "team@resourceful.com",
                     to: added.email,
                     subject: "Reservation Starting!",
-                    text: "Hello, your reservation is starting now!",
+                    text: "Hello, your updated reservation is starting now!",
                     date: added.start
                 }
                 var endDetails = {
                         from: "team@resourceful.com",
                         to: added.email,
                         subject: "Reservation Starting!",
-                        text: "Hello, your reservation is ending now!",
+                        text: "Hello, your updated upreservation is ending now!",
                         date: added.end
                 }
                 // async callback to add key to database
