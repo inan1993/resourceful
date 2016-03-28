@@ -10,7 +10,7 @@ Template.login.events({
             console.log("was called");
             if (Meteor.user()) {
                 console.log("logged");
-                Router.go('');
+                Router.go('/');
             } else {
                 console.log(err.reason);
                 toastr.error(err.reason);

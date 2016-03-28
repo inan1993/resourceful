@@ -135,7 +135,7 @@ Router.onBeforeAction(function(){
     }, {
   only: ['editresource']
 });
-
+// FIX THIS
 Router.onBeforeAction(function(){
         if(Roles.userIsInRole(Meteor.user(), ['admin','user'])){
             this.next();

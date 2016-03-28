@@ -1,7 +1,16 @@
 <template name="groupslist">
     <div class="row">
-    <h3>Add a new Group</h3>
-    {{> quickForm collection="Groups" id="insertGroupForm" type="insert" resetOnSuccess="true"}}
+    {{#autoForm collection="Groups" id="insertGroupForm" type="insert" resetOnSuccess="true"}}
+    <fieldset>
+        <legend>Add a new Group</legend>
+        {{> afQuickField name='name'}}
+        {{> afQuickField name='members' type='select-multiple' options=optionsHelper}}
+        {{> afQuickField name='resourceManagers'}}
+        {{> afQuickField name='reservationManagers'}}
+        {{> afQuickField name='userManagers'}}
+    </fieldset>
+    <button type="submit" class="btn btn-primary">Update Group</button>
+    {{/autoForm}}
     </div>
     <div class="row">
         <h3>Current Groups</h3>

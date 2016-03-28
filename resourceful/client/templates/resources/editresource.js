@@ -6,9 +6,8 @@ var resourceHooks = {
                 console.log(error);
             } else {
                 toastr.success('Updated resource!')
-                Router.go('resource', {
-                    _id: Router.current().params._id
-                });
+                Router.render('dashboard');
+                Router.go('dashboard');
             }
         }
     }
@@ -39,5 +38,10 @@ Template.editresource.helpers({
                 this.remove();
             }
         };
+    },
+    optionsHelper: function () {
+        return Meteor.users.find({}).map(function (u){
+            return {label: u.emails[0].address, value: u._id};
+        })
     }
 });

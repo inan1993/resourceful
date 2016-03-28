@@ -1,7 +1,16 @@
 <template name="editgroup">
     <div class="row">
-    <h3>Edit Group</h3>
-    {{> quickForm collection="Groups" doc=this id="updateGroupForm" type="update"}}
-    {{> quickRemoveButton collection="Groups" _id=this._id class="btn btn-danger"}}
+        {{#autoForm collection="Groups" doc=this id="updateGroupForm" type="update"}}
+    <fieldset>
+        <legend>Edit Group</legend>
+        {{> afQuickField name='name'}}
+        {{> afQuickField name='members' type='select-multiple' options=optionsHelper}}
+        {{> afQuickField name='resourceManagers'}}
+        {{> afQuickField name='reservationManagers'}}
+        {{> afQuickField name='userManagers'}}
+    </fieldset>
+    <button type="submit" class="btn btn-primary">Update Group</button>
+    {{/autoForm}}
+    {{> quickRemoveButton collection="Groups" _id=this._id onSuccess=onSuccess class="btn btn-danger"}}
     </div>
 </template>

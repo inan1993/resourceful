@@ -6,7 +6,7 @@ Groups.attachSchema(new SimpleSchema({
     },
     members: {
         type: [String],
-        label: "Member's emails"
+        label: "Current Members"
     },
     resourceManagers: {
         type: Boolean,

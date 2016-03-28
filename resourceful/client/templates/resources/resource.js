@@ -84,11 +84,11 @@ Template.resource.helpers({
         }
     },
     canReserve: function () {
-        if (_.contains(Resources.findOne(Router.current().params._id).cannotReserve, Meteor.user().emails[0].address)) {
-            return false;
+        if (_.contains(Resources.findOne(Router.current().params._id).canReserve, Meteor.user())) {
+            return true;
         }
         else{
-            return true;
+            return false;
         }          
     },
     events: function () {

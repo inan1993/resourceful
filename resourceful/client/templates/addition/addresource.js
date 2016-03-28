@@ -14,3 +14,11 @@ var resourceHooks = {
 }
 
 AutoForm.addHooks('insertResourceForm', resourceHooks);
+
+Template.addresource.helpers({
+    optionsHelper: function () {
+        return Meteor.users.find({}).map(function (u){
+            return {label: u.emails[0].address, value: u._id};
+        })
+    }
+});

@@ -13,14 +13,14 @@ Resources.attachSchema(new SimpleSchema({
         type: String,
         label: "Description",
     },
-    cannotView: {
+    canReserve: {
         type: [String],
-        label: "Cannot View",
+        label: "Can Reserve",
         optional: true
     },
-    cannotReserve: {
+    canView: {
         type: [String],
-        label: "Cannot Reserve",
+        label: "Can View",
         optional: true
     }
 }));

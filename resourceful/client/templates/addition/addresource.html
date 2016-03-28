@@ -5,8 +5,8 @@
         {{> afQuickField name='name'}}
         {{> afQuickField name='description' rows=6}}
         {{> afQuickField name='tags'}}
-        {{> afQuickField name='cannotReserve'}}
-         {{> afQuickField name='cannotView'}}
+        {{> afQuickField name='canReserve' options=optionsHelper}}
+        {{> afQuickField name='canView' options=optionsHelper}}
     </fieldset>
     <button type="submit" class="btn btn-primary">Add Resource</button>
     {{/autoForm}}
