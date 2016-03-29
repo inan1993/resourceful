@@ -24,20 +24,7 @@ var reservationHooks = {
                     },{
                         approved: true
                     }]
-                }) || Resources.findOne({ _id: {$in
-                [Reservations.findOne({
-                    $and: [{
-                        start: {
-                            $lte: doc.end
-                        }
-                    }, {
-                        end: {
-                            $gte: doc.start
-                        }
-                    }, {
-                        resourceId: Router.current().params._id
-                    }]
-                })}) {
+                })) {
                 toastr.error('Already reserved!');
                 return false;
             }
