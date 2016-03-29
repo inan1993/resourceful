@@ -2,9 +2,17 @@ var reserveHooks = {
     before: {
         insert: function (doc) {
         console.log(doc);
+        if(typeof doc.resourceId == "undefined"){
+            toastr.error('no resource selected');
+            return false;
+        }
+        doc.approved = true;
         for (i = 0; i < doc.resourceId.length; i++) { 
             currResource = doc.resourceId[i];
             console.log("resource" + i + " " +currResource);
+            if(Resources.findOne({_id:currResource}).restricted){
+                doc.approved = false;
+            }
             reserve = Reservations.findOne({
                     $and: [{
                         start: {
@@ -18,6 +26,7 @@ var reserveHooks = {
                         resourceId: currResource
                     }]
                 });
+
                 if(reserve) {
                 // Now we have every reservation that overlaps on the current resource.
                 // a fatal error occurs if this is an unrestricted resource and any other resource in the reservation is                        restricted, or if this is a restricted resource that has been approved
@@ -32,18 +41,18 @@ var reserveHooks = {
                 doc.userId = Meteor.userId();
                 doc.email = Meteor.user().emails[0].address;  
             }
-            console.log(doc);
             return doc;
         }
 
     },
     after: {
         insert: function (error, result) {
-            if (error) {
-                console.log("I was called!")
+            console.log(error);
+            console.log(result);
+            if (error) {               
                 toastr.error(error);
-                console.log(error);
             } else {
+                console.log("I was called!")
                 var added = Reservations.findOne({
                     _id: result
                 });
