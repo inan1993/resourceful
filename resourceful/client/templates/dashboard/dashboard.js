@@ -11,6 +11,36 @@ Template.dashboard.rendered = function () {
     TagsSearch.search('');
 };
 
+function checkResourceManager() {
+    if(Roles.userIsInRole(Meteor.user(), ['admin', 'resourceManager']) || Groups.findOne({$and: [{
+                members: {
+                    $in: [currUser]
+                }
+                    }, {
+                resourceManagers: true
+                    }]})){
+            return true;
+        }
+        else{
+            return false;
+        }
+}
+
+function checkUserManager() {
+    if(Roles.userIsInRole(Meteor.user(), ['admin', 'userManager']) || Groups.findOne({$and: [{
+                members: {
+                    $in: [currUser]
+                }
+                    }, {
+                userManagers: true
+                    }]})){
+            return true;
+        }
+        else{
+            return false;
+        }
+}
+
 Template.dashboard.helpers({
     getResources: function () {
         return TagsSearch.getData({
@@ -18,6 +48,15 @@ Template.dashboard.helpers({
                 isoScore: 1
             }
         });
+    },
+    isManager: function () {
+        return checkResourceManager() || checkUserManager();
+    },
+    isResourceManager: function () {
+        return checkResourceManager();
+    },
+    isUserManager: function () {
+        return checkUserManager();
     }
 });
 // Add a tracker.autorun to automatically rerun search when data source changes
@@ -39,6 +78,10 @@ Template.dashboard.events({
     'click #reserve': function (event) {
         event.preventDefault();
         Router.go('reservation');
+    },
+    'click #approve': function (event) {
+        event.preventDefault();
+        Router.go('approvals');
     },
     'click #groups': function (event) {
         event.preventDefault();

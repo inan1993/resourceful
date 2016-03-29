@@ -62,16 +62,16 @@ Router.onBeforeAction(function(){
   except: ['enroll']
 });
 
-Router.onBeforeAction(function(){
-        if(Roles.userIsInRole(Meteor.user(), ['admin','userManager'])){
-            this.next();
-        }
-        else{
-            this.render('forbidden');
-        }
-    }, {
-  only: ['groupslist']
-});
+//Router.onBeforeAction(function(){
+//        if(Roles.userIsInRole(Meteor.user(), ['admin','userManager'])){
+//            this.next();
+//        }
+//        else{
+//            this.render('forbidden');
+//        }
+//    }, {
+//  only: ['groupslist']
+//});
 
 Router.onBeforeAction(function(){
         if(Meteor.users.findOne({_id: this.params._id})){
@@ -98,28 +98,28 @@ Router.onBeforeAction(function(){
   only: ['resource']
 });
 
-Router.onBeforeAction(function(){
-    
-        if(Roles.userIsInRole(Meteor.user(), ['admin','resourceManager'])){
-            this.next();
-        }
-        else{
-            this.render('forbidden');
-        }
-    }, {
-  only: ['editresource']
-});
+//Router.onBeforeAction(function(){
+//    
+//        if(Roles.userIsInRole(Meteor.user(), ['admin','resourceManager'])){
+//            this.next();
+//        }
+//        else{
+//            this.render('forbidden');
+//        }
+//    }, {
+//  only: ['editresource']
+//});
 
-Router.onBeforeAction(function(){
-        if(Roles.userIsInRole(Meteor.user(), ['admin','user']) || Meteor.user()._id == Reservations.findOne(Router.current().params._id).userId){
-            this.next();
-        }
-        else{
-            this.render('forbidden');
-        }
-    }, {
-  only: ['editreservation']
-});
+//Router.onBeforeAction(function(){
+//        if(Roles.userIsInRole(Meteor.user(), ['admin','user']) || Meteor.user()._id == Reservations.findOne(Router.current().params._id).userId){
+//            this.next();
+//        }
+//        else{
+//            this.render('forbidden');
+//        }
+//    }, {
+//  only: ['editreservation']
+//});
 
 Router.onBeforeAction(function(){
         if(Reservations.findOne({_id: this.params._id})){

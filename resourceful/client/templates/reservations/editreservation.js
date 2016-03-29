@@ -2,22 +2,24 @@ var reservationHooks = {
     before: {
         update: function (doc) {
             current = Reservations.findOne({_id: Router.current().params._id});
-            if((current.end<doc.end || current.start>doc.start) && current.approved){
-                toastr.error("You can only reduce the span of an approved reservation. Please create a new reservation.");
-                
-                Router.go("reservation");
+            if( current.end<doc.$set.end || current.start<doc.$set.start ){
+                if(confirm("You can only reduce the span of a reservation. Delete this one and make a new reservation?")){
+                   Router.go("reservation");
+                   return false;
+                }
+            else{
                 return false;
             }
-            // Two cases, one, you have a resource which is unrestricted and reserved, which means you always reject
-            // else, you have a resource which is restricted and approved
+                
+            }
             if (Reservations.findOne({
                     $and: [{
                         start: {
-                            $lte: doc.end
+                            $lte: doc.$set.end
                         }
                     }, {
                         end: {
-                            $gte: doc.start
+                            $gte: doc.$set.start
                         }
                     }, {
                         resourceId: Router.current().params._id

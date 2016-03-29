@@ -2,6 +2,17 @@ Template.approvals.helpers({
     getResources: function () {
         currUser = Meteor.user()._id;
         // find all resources I manage
+        if(Groups.findOne({$and: [{
+                members: {
+                    $in: [currUser]
+                }
+                    }, {
+                reservationManagers: true
+                    }]})){
+            return Resources.find({
+                restricted: true
+            })
+        }
         return Resources.find({
             $and: [{
                 managers: {
@@ -26,9 +37,12 @@ Template.approvals.helpers({
 Template.approvals.events({
     'click #approve': function (event) {
         event.preventDefault();
-        console.log(this);
         // check if this is the last needed approval. if not, just add this resource to the approval list.
-        
+        // Get all the needed approvals - this.resourceId contains all of them
+        if(this.approvals)
+        Resources.find({_id: {
+                    $in: [this.resourceId]
+                }})
         // If we are the last approval, check if there are reservations that will be cancelled if we approve this one
         // for all resources in this reservation
         // find out if theres another unapproved reservation in this time period
@@ -36,7 +50,7 @@ Template.approvals.events({
         resources = Resources.find({
             $and: [{
                 _id: {
-                    $in: [this.resourceId]
+                    $in: [currUser]
                 }
                     }, {
                 restricted: true
