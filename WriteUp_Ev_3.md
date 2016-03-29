@@ -7,7 +7,7 @@
 - Identify Bad design choices
 - Did the design decisions effect the them and how?
 - What would you have done differently
-- 
+
 
 
 ### Analysis
