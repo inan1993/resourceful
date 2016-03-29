@@ -7,12 +7,13 @@
 - What would you have done differently
 
 ### Analysis
-- Justify current design decisions
+- Justify current design decisions.
 - How will these decisions help in the future?
-- Identify weaknesses and strengths
+- Identify weaknesses and strengths?
 - How would you fix the weaknesses in the future?
 
 
-- Grammar and writing
-- Organization and neatness
+------------
+- Grammar and writing.
+- Organization and neatness.
 - Supplementary aid (diagrams, images, charts...)
