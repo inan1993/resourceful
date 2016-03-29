@@ -23,7 +23,7 @@ var reserveHooks = {
             // this means theres an overlap with an already granted reservation - reject this one
             if(reserve) {
                 console.log(reserve)
-                toastr.error('One or more resources already reserved or pending!');
+                toastr.error('One or more resources already reserved!');
                 return false;
             }
             myRes = Resources.findOne({_id: currResource});
