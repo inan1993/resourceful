@@ -1,5 +1,5 @@
 <template name="reservation">
-    {{#autoForm collection="Reservations" id="insertReservationForm" type="insert" resetOnSuccess="true"}}
+    {{#autoForm collection="Reservations" doc = this id="insertReservationForm" type="insert" resetOnSuccess="true"}}
             <fieldset>
                 <legend>Add a Reservation</legend>
                 {{> afQuickField name="name"}}

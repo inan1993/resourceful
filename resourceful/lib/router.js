@@ -85,7 +85,7 @@ Router.onBeforeAction(function(){
 });
 
 Router.onBeforeAction(function(){
-        if(!(_.contains(Resources.findOne(Router.current().params._id).canView, Meteor.user()._id))) {
+        if(!Resources.findOne(Router.current().params._id) || !(_.contains(Resources.findOne(Router.current().params._id).canView, Meteor.user()._id))) {
              this.render('forbidden');
         }
         if(Resources.findOne({_id: this.params._id})){
