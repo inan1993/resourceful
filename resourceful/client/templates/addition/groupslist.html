@@ -19,7 +19,7 @@
             <button type="button" class="list-group-item">
                 <h5 class="list-group-item-heading">{{name}}</h5>
                 {{#each member in members}}
-                <span class="badge">{{{member}}}</span> {{/each}}
+                <span class="badge">{{getEmail member}}</span> {{/each}}
             </button>
             {{/each}}
         </div>

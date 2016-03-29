@@ -7,6 +7,9 @@ Template.groupslist.helpers({
         return Meteor.users.find({}).map(function (u){
             return {label: u.emails[0].address, value: u._id};
         })
+    },
+    getEmail: function(id){
+        return Meteor.users.findOne({_id: id}).emails[0].address;
     }
 });
 

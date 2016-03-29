@@ -113,7 +113,12 @@ AutoForm.addHooks('insertReservationForm', reserveHooks);
 
 Template.reservation.helpers({
     optionsHelper: function () {
-        return Resources.find({}).map(function (u){
+        if(Roles.userIsInRole(Meteor.user(), ['resourceManager'])){
+            return Resources.find({}).map(function (u){
+                return {label: u.name, value: u._id};
+        });
+        }
+        return Resources.find({canReserve: {$in: [Meteor.user()._id]}}).map(function (u){
             return {label: u.name, value: u._id};
         });
     }
