@@ -85,7 +85,9 @@ Meteor.methods({
                         }
                     }, {
                         resourceId: {
-                            $in: [reservation.resourceId]
+                            $not: {
+                                $in: [reservation.resourceId]
+                            }
                         }
                     }, {
                         approved: false

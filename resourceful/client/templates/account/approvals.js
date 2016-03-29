@@ -80,6 +80,7 @@ Template.approvals.events({
         }
         if (willApprove) {
             // check what will be removed
+            console.log(reservation.resourceId)
             toCancel = Reservations.find({
                 $and: [{
                         start: {
@@ -91,29 +92,38 @@ Template.approvals.events({
                         }
                     }, {
                         resourceId: {
-                            $in: [reservation.resourceId]
+                            $not: {
+                                $in: [reservation.resourceId]
+                            }
                         }
                     }, {
                         approved: false
                     },
                     {
                         _id: {
-                            $not: reservation._id
+                            $ne: reservation._id
                         }
                     }]
             }).fetch();
-            toCancel = _.uniq(toCancel);
-            console.log("Cancelling");
+            //toCancel = _.uniq(toCancel);
+            console.log("Cancelling " + toCancel.length);
             cancelString = "\n"
             for (var j = 0; j < toCancel.length; j++) {
                 console.log(toCancel[j]);
-                cancelString += toCancel[j].name +"\n"
+                cancelString += toCancel[j].name + "\n"
             }
 
             if (toCancel.length != 0) {
-                if (confirm('The following reservations will be rejected upon approval: '+cancelString)) {
+                if (confirm('The following reservations will be rejected upon approval: ' + cancelString)) {
                     Meteor.call('checkApprovals', this._id);
                 } else {
+                    Reservations.update({
+                        _id: this._id
+                    }, {
+                        $pull: {
+                            approvals: thisResource
+                        }
+                    });
                     return false;
                 }
             } else {

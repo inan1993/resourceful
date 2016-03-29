@@ -44,7 +44,7 @@ var reserveHooks = {
                     }]
                 });
             if(wildWest){
-                console.log("WILDWEST " + reserve)
+                console.log("WILDWEST " + myRes)
                 toastr.error('An unrestricted resource is blocked for this period. Cannot reserve');
                 return false;
             }
