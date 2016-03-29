@@ -28,7 +28,13 @@ Accounts.onCreateUser(function (options, user) {
     return user;
 });
 function rejectReservation(reservationId) {
-        // ADD CODE TO SEND REJECTION EMAIL HERE
+        var reservation = Reservations.findOne({_id: reservationId});
+        Email.send({
+            from: "team@resourceful.com",
+            to: reservation.email,
+            subject: "Reservation Rejected",
+            text: "Hello, We are sorry to inform you that your requested reservation on a restricted resource has been rejected."
+        });
         // Then, remove the reservation
         console.log("removed " + Reservations.findOne({
             _id: reservationId
