@@ -81,6 +81,10 @@ Template.approvals.events({
         if (willApprove) {
             // check what will be removed
             console.log(reservation.resourceId)
+            console.log(Reservations.find({
+                        resourceId: {
+                           $in: reservation.resourceId
+                        }}).fetch())
             toCancel = Reservations.find({
                 $and: [{
                         start: {
@@ -92,9 +96,7 @@ Template.approvals.events({
                         }
                     }, {
                         resourceId: {
-                            $not: {
-                                $in: [reservation.resourceId]
-                            }
+                            $in: reservation.resourceId
                         }
                     }, {
                         approved: false

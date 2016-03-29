@@ -85,16 +85,14 @@ Meteor.methods({
                         }
                     }, {
                         resourceId: {
-                            $not: {
-                                $in: [reservation.resourceId]
-                            }
+                            $in: reservation.resourceId
                         }
                     }, {
                         approved: false
                     },
                     {
                         _id: {
-                            $ne: reservationId
+                            $ne: reservation._id
                         }
                     }]
             }).fetch();

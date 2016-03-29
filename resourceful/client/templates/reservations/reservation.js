@@ -3,6 +3,10 @@ var reserveHooks = {
         insert: function (doc) {
             console.log(doc);
             immediateApprove = true;
+            if(!doc.resourceId){
+                toastr.error("Please select a resource")
+                    return false;
+            }
             for (i = 0; i < doc.resourceId.length; i++) {
                 currResource = doc.resourceId[i];
                 console.log("resource" + i + " " + currResource);
