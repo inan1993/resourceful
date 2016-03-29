@@ -27,12 +27,12 @@ Accounts.registerLoginHandler(function(loginRequest) {
   else{
     console.log('Login Handler Server2 ' + loginRequest.netID);
     var user_Id = null;
-    var user = Meteor.users.findOne({emails: [loginRequest.netID]});
+    var user = Meteor.users.findOne({emails: [{address: loginRequest.netID, verified: true}]});
     if(!user) {
       user_Id = Meteor.users.insert({emails: [{address: loginRequest.netID, verified: true}]});
-      // Meteor.users.update(user_Id, {$set: {"emails.0.verified" : true}});
     } else {
       user_Id = user._id;
+      console.log('User already signed in-'+loginRequest.netID);
     }
     //creating the token and adding to the user
     var stampedToken = Accounts._generateStampedLoginToken();
