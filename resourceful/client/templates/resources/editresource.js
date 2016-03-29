@@ -1,4 +1,15 @@
 var resourceHooks = {
+    before:{
+        update: function(doc){
+            resource = Resources.findOne({_id: doc.$set._id});
+            if(!doc.$set.restricted && resource.restricted){
+                out = Reservations.find({resourceId: {$in: [resource._id]}}).fetch()
+                for(i=0; i<out.length; i++){
+                    Meteor.call("checkApprovals", out[i]);
+                }
+            }
+        }
+    },
     after: {
         update: function (error, result) {
             if (error) {
@@ -22,11 +33,11 @@ Template.editresource.helpers({
     },
     beforeRemove: function () {
         return function (collection, id) {
-            if(Reservations.findOne({resourceId: Router.current().params._id})){
+            if(Reservations.findOne({resourceId: {$in: [Router.current().params._id]}})){
                 if (confirm('The resource has a reservation. Delete anyway?')) {
                     //TODO: remove the old reservations
+                    Reservations.remove({resourceId: {$in: [Router.current().params._id]}});
                     Router.go('dashboard');
-                    this.remove();
                 } 
                 else{
                     return false;
@@ -34,7 +45,6 @@ Template.editresource.helpers({
             }
             else{
                 Router.go('dashboard');
-                this.remove();
             }
         };
     },
