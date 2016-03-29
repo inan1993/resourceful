@@ -19,8 +19,7 @@ Resources.attachSchema(new SimpleSchema({
     },
     managers: {
         type: [String],
-        label: "Managers",
-        optional: true
+        label: "Managers"
     },
     canReserve: {
         type: [String],

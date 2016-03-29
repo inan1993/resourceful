@@ -20,9 +20,8 @@ var reserveHooks = {
                 });
                 if(reserve) {
                 // Now we have every reservation that overlaps on the current resource.
-                // a fatal error occurs if this is an unrestricted resource and any other resource in the reservation is                        restricted, or if this is a restricted resource that has been approved
+                // a fatal error occurs if this is an unrestricted resource - then it fails automatically - or if its a                     restricted resource where any other resource has been approved. and any other resource in that reservation is                        restricted, or if this is a restricted resource that has been approved
                 console.log(reserve)
-                
                 toastr.error('One or more resources already reserved or pending!');
                 return false;
             }

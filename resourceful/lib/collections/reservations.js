@@ -57,6 +57,7 @@ Reservations.attachSchema(new SimpleSchema({
         defaultValue: false
     },
     approvals:{
-        type: [String]
+        type: [String],
+        optional: true
     }
 }));
