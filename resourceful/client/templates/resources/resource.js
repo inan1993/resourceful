@@ -48,7 +48,7 @@ Template.resource.helpers({
             // Check if authorized
             if (Roles.userIsInRole(Meteor.user(), ['admin','reservationManager']) || calEvent.userId == Meteor.userId() || Groups.findOne({$and: [{
                 members: {
-                    $in: [currUser]
+                    $in: [Meteor.user()._id]
                 }
                     }, {
                 reservationManagers: true
@@ -63,7 +63,7 @@ Template.resource.helpers({
     isResourceManager: function (){
         if(Roles.userIsInRole(Meteor.user(), ['admin', 'resourceManager']) || Groups.findOne({$and: [{
                 members: {
-                    $in: [currUser]
+                    $in: [Meteor.user()._id]
                 }
                     }, {
                 resourceManagers: true

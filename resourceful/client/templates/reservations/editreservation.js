@@ -2,15 +2,15 @@ var reservationHooks = {
     before: {
         update: function (doc) {
             current = Reservations.findOne({_id: Router.current().params._id});
-            if( current.end<doc.$set.end || current.start<doc.$set.start ){
-                if(confirm("You can only reduce the span of a reservation. Delete this one and make a new reservation?")){
+            if( (current.end<doc.$set.end || current.start<doc.$set.start) && current.approved ){
+                if(confirm("You can only reduce the span of an approved reservation. Make a new reservation?")){
                    Router.go("reservation");
                    return false;
                 }
             else{
                 return false;
             }
-                
+
             }
             if (Reservations.findOne({
                     $and: [{

@@ -14,7 +14,7 @@ Template.dashboard.rendered = function () {
 function checkResourceManager() {
     if(Roles.userIsInRole(Meteor.user(), ['admin', 'resourceManager']) || Groups.findOne({$and: [{
                 members: {
-                    $in: [currUser]
+                    $in: [Meteor.user()._id]
                 }
                     }, {
                 resourceManagers: true
@@ -29,7 +29,7 @@ function checkResourceManager() {
 function checkUserManager() {
     if(Roles.userIsInRole(Meteor.user(), ['admin', 'userManager']) || Groups.findOne({$and: [{
                 members: {
-                    $in: [currUser]
+                    $in: [Meteor.user()._id]
                 }
                     }, {
                 userManagers: true

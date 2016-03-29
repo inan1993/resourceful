@@ -2,13 +2,15 @@ Template.approvals.helpers({
     getResources: function () {
         currUser = Meteor.user()._id;
         // find all resources I manage
-        if(Groups.findOne({$and: [{
-                members: {
-                    $in: [currUser]
-                }
+        if (Groups.findOne({
+                $and: [{
+                    members: {
+                        $in: [currUser]
+                    }
                     }, {
-                reservationManagers: true
-                    }]})){
+                    reservationManagers: true
+                    }]
+            })) {
             return Resources.find({
                 restricted: true
             })
@@ -23,81 +25,103 @@ Template.approvals.helpers({
                     }]
         })
     },
-    getReservations: function(){
-            return Reservations.find({
-                    $and: [{
-                        resourceId: this._id
+    getReservations: function () {
+        return Reservations.find({
+            $and: [{
+                resourceId: this._id
                     }, {
-                        approved: false
-                    }]
-                })
+                approved: false
+                    }, {
+                approvals: {
+                    $not: {
+                        $in: [this._id]
+                    }
+                }
+            }]
+        })
     }
 });
 
 Template.approvals.events({
-    'click #approve': function (event) {
+    'click .approve': function (event) {
         event.preventDefault();
         // check if this is the last needed approval. if not, just add this resource to the approval list.
         // Get all the needed approvals - this.resourceId contains all of them
-        if(this.approvals)
-        Resources.find({_id: {
-                    $in: [this.resourceId]
-                }})
+        // approve myself
+        console.log(event.target.id)
+        console.log(this._id);
+        thisResource = event.target.id;
+        Reservations.update({
+            _id: this._id
+        }, {
+            $addToSet: {
+                approvals: thisResource
+            }
+        });
+        reservation = Reservations.findOne({
+            _id: this._id
+        });
         // If we are the last approval, check if there are reservations that will be cancelled if we approve this one
         // for all resources in this reservation
         // find out if theres another unapproved reservation in this time period
-        
-        resources = Resources.find({
-            $and: [{
-                _id: {
-                    $in: [currUser]
+        var willApprove = true;
+        for (var i = 0; i < reservation.resourceId.length; i++) {
+            // if the resourceId is either unverified or is in our approvals array, we're good
+            var currResource = Resources.findOne({
+                _id: reservation.resourceId[i]
+            });
+            if (currResource.restricted) {
+                console.log("restricted");
+                if (reservation.approvals.length == 0 || !(_.contains(reservation.approvals, reservation.resourceId[i]))) {
+                    console.log("not in approvals");
+                    willApprove = false;
                 }
+            }
+        }
+        if (willApprove) {
+            // check what will be removed
+            toCancel = Reservations.find({
+                $and: [{
+                        start: {
+                            $lte: reservation.end
+                        }
                     }, {
-                restricted: true
+                        end: {
+                            $gte: reservation.start
+                        }
+                    }, {
+                        resourceId: {
+                            $in: [reservation.resourceId]
+                        }
+                    }, {
+                        approved: false
+                    },
+                    {
+                        _id: {
+                            $not: reservation._id
+                        }
                     }]
-        }).fetch();
-        console.log(resources)
-        // now check the timestamp of any reservation on any of these resources to see if it conflicts
-        console.log(Reservations.find({
-            $and: [{
-                    resourceId: {
-                        $in: [resources] }}, { approved: false }]
+            }).fetch();
+            toCancel = _.uniq(toCancel);
+            console.log("Cancelling");
+            cancelString = "\n"
+            for (var j = 0; j < toCancel.length; j++) {
+                console.log(toCancel[j]);
+                cancelString += toCancel[j].name +"\n"
+            }
 
-        }).fetch())
-        cancelled = Reservations.find({
-            $and: [{
-                    resourceId: {
-                        $in: [resources] }}, { approved: false },
-                {
-                    $and: [{
-                            start: {
-                                $lte: this.end
-                            }
-                    }, {
-                            end: {
-                                $gte: this.start
-                            }
-                    }
-                  ]}]
-
-        }).fetch();
-        console.log("WILL CANCEL")
-        console.log(cancelled);
-        if(cancelled.length!=0){
-        if (confirm('The following reservations will be rejected upon approval: ')) {
-            //TODO: remove the old reservations
-
-
-        } else {
-            return false;
+            if (toCancel.length != 0) {
+                if (confirm('The following reservations will be rejected upon approval: '+cancelString)) {
+                    Meteor.call('checkApprovals', this._id);
+                } else {
+                    return false;
+                }
+            } else {
+                Meteor.call('checkApprovals', this._id);
+            }
         }
-        }
-        // set this one to approved
-        //Reservations.update({_id: this._id}, {$set: {approved:true}});
-        // Cancel all the other reservations
-        
     },
-    'click #reject': function (event) {
+    'click .reject': function (event) {
         event.preventDefault();
         console.log(this);
         Meteor.call("rejectReservation", this._id);

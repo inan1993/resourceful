@@ -16,16 +16,39 @@ var reserveHooks = {
                         }
                     }, {
                         resourceId: currResource
+                    },{
+                        approved: true
                     }]
                 });
-                if(reserve) {
-                // Now we have every reservation that overlaps on the current resource.
-                // a fatal error occurs if this is an unrestricted resource - then it fails automatically - or if its a                     restricted resource where any other resource has been approved. and any other resource in that reservation is                        restricted, or if this is a restricted resource that has been approved
+            // this means theres an overlap with an already granted reservation - reject this one
+            if(reserve) {
                 console.log(reserve)
                 toastr.error('One or more resources already reserved or pending!');
                 return false;
             }
-            
+            myRes = Resources.findOne({_id: currResource});
+            if(!myRes.restricted){
+            wildWest = Reservations.findOne({
+                    $and: [{
+                        start: {
+                            $lte: doc.end
+                        }
+                    }, {
+                        end: {
+                            $gte: doc.start
+                        }
+                    }, {
+                        resourceId: currResource
+                    },{
+                        approved: false
+                    }]
+                });
+            if(wildWest){
+                console.log("WILDWEST " + reserve)
+                toastr.error('An unrestricted resource is blocked for this period. Cannot reserve');
+                return false;
+            }
+            }
         }
             if (Meteor.userId()) {
                 doc.userId = Meteor.userId();
@@ -39,7 +62,6 @@ var reserveHooks = {
     after: {
         insert: function (error, result) {
             if (error) {
-                console.log("I was called!")
                 toastr.error(error);
                 console.log(error);
             } else {
@@ -47,6 +69,10 @@ var reserveHooks = {
                     _id: result
                 });
                 toastr.success('Reserved!');
+                // update reservation's "approved" status
+                // The wild west argument is only about approval.
+                // if you're the last needed approval, change reservation status to approved and cancel all competing reservations
+                Meteor.call("checkApprovals", result);
                 var startDetails = {
                     from: "team@resourceful.com",
                     to: added.email,
