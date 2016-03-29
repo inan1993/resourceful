@@ -6,7 +6,6 @@ var resourceHooks = {
                 console.log(error);
             } else {
                 toastr.success('Updated resource!')
-                Router.render('dashboard');
                 Router.go('dashboard');
             }
         }
@@ -38,6 +37,14 @@ Template.editresource.helpers({
                 this.remove();
             }
         };
+    },
+    canReserve: function () {
+        if (_.contains(Resources.findOne(Router.current().params._id).canReserve, Meteor.user()._id)) {
+            return true;
+        }
+        else{
+            return false;
+        }          
     },
     optionsHelper: function () {
         return Meteor.users.find({}).map(function (u){

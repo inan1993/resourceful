@@ -33,17 +33,10 @@ Meteor.methods({
         var userId = Accounts.createUser(userToAdd);
         Accounts.sendEnrollmentEmail(userId);
     },
-    makeUserManager: function(user){
-        console.log(user);
-        Roles.addUsersToRoles(user._id, ['userManager']);
-    },
-    makeResourceManager: function(user){
-        console.log(user);
-        Roles.addUsersToRoles(user._id, ['resourceManager']);
-    },
-    makeReservationManager: function(user){
-        console.log(user);
-        Roles.addUsersToRoles(user._id, ['reservationManager']);
+    rejectReservation: function (reservationId){
+        // ADD CODE TO SEND REJECTION EMAIL HERE
+        // Then, remove the reservation
+        Reservations.remove({_id: reservationId});
     }
 });
 

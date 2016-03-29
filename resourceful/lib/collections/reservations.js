@@ -4,6 +4,10 @@ SimpleSchema.messages({
     "inPast": "Start time must be in the future!"
 });
 Reservations.attachSchema(new SimpleSchema({
+    name: {
+        type: String,
+        label: "Name"
+    },
     userId: {
         type: String,
         label: "User Id"
@@ -41,11 +45,18 @@ Reservations.attachSchema(new SimpleSchema({
         optional: true
     },
     resourceId: {
-        type: String,
-        label: "Resource Id"
+        type: [String],
+        label: "Requested Resources"
     },
     description: {
         type: String,
         label: "Description"
+    },
+    approved:{
+        type: Boolean,
+        defaultValue: false
+    },
+    approvals:{
+        type: [String]
     }
 }));

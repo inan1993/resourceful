@@ -1,3 +1,4 @@
+
 Template.groupslist.helpers({
     getGroups: function () {
         return Groups.find({}).fetch();

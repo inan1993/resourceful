@@ -85,7 +85,7 @@ Router.onBeforeAction(function(){
 });
 
 Router.onBeforeAction(function(){
-        if(_.contains(Resources.findOne(Router.current().params._id).cannotView, Meteor.user().emails[0].address)) {
+        if(!(_.contains(Resources.findOne(Router.current().params._id).canView, Meteor.user()._id))) {
              this.render('forbidden');
         }
         if(Resources.findOne({_id: this.params._id})){
@@ -99,6 +99,7 @@ Router.onBeforeAction(function(){
 });
 
 Router.onBeforeAction(function(){
+    
         if(Roles.userIsInRole(Meteor.user(), ['admin','resourceManager'])){
             this.next();
         }
@@ -108,16 +109,16 @@ Router.onBeforeAction(function(){
     }, {
   only: ['editresource']
 });
-// FIX THIS
+
 Router.onBeforeAction(function(){
-        if(Roles.userIsInRole(Meteor.user(), ['admin','user'])){
+        if(Roles.userIsInRole(Meteor.user(), ['admin','user']) || Meteor.user()._id == Reservations.findOne(Router.current().params._id).userId){
             this.next();
         }
         else{
             this.render('forbidden');
         }
     }, {
-  only: ['reservation']
+  only: ['editreservation']
 });
 
 Router.onBeforeAction(function(){
@@ -128,7 +129,7 @@ Router.onBeforeAction(function(){
             this.render('forbidden');
         }
     }, {
-  only: ['reservation']
+  only: ['editreservation']
 });
 
 Router.route('/prof/:_id',{
@@ -140,6 +141,10 @@ Router.route('/prof/:_id',{
 
 Router.route('/groups/',{
     name: 'groupslist'
+});
+
+Router.route('/approvals/',{
+    name: 'approvals'
 });
 
 Router.route('/resource/:_id',{
@@ -158,10 +163,14 @@ Router.route('/group/:_id',{
 });
 
 Router.route('/reservation/:_id',{
-    name: 'reservation',
+    name: 'editreservation',
     data: function () {
       return Reservations.findOne({_id: this.params._id});
     }
+});
+
+Router.route('/newreservation',{
+    name: 'reservation'
 });
 
 Router.route('/resource/:_id/edit', {

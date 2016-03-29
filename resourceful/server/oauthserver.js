@@ -29,7 +29,7 @@ Accounts.registerLoginHandler(function(loginRequest) {
     var user_Id = null;
     var user = Meteor.users.findOne({emails: [loginRequest.netID]});
     if(!user) {
-      user_Id = Meteor.users.insert({emails: [loginRequest.netID]});
+      user_Id = Meteor.users.insert({emails: [{address: loginRequest.netID, verified: true}]});
       // Meteor.users.update(user_Id, {$set: {"emails.0.verified" : true}});
     } else {
       user_Id = user._id;

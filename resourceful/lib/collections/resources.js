@@ -13,6 +13,15 @@ Resources.attachSchema(new SimpleSchema({
         type: String,
         label: "Description",
     },
+    restricted: {
+        type: Boolean,
+        label: "Requires Approval"
+    },
+    managers: {
+        type: [String],
+        label: "Managers",
+        optional: true
+    },
     canReserve: {
         type: [String],
         label: "Can Reserve",

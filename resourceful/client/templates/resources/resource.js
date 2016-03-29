@@ -1,80 +1,3 @@
-var reserveHooks = {
-    before: {
-        insert: function (doc) {
-            if (Reservations.findOne({
-                    $and: [{
-                        start: {
-                            $lte: doc.end
-                        }
-                    }, {
-                        end: {
-                            $gte: doc.start
-                        }
-                    }, {
-                        resourceId: Router.current().params._id
-                    }]
-                })) {
-                toastr.error('Already reserved!');
-                return false;
-            }
-            if (Meteor.userId()) {
-                doc.userId = Meteor.userId();
-                doc.email = Meteor.user().emails[0].address
-                doc.resourceId = Router.current().params._id;
-            }
-            return doc;
-        }
-
-    },
-    after: {
-        insert: function (error, result) {
-            if (error) {
-                toastr.error(error);
-                console.log(error);
-            } else {
-                var added = Reservations.findOne({
-                    _id: result
-                });
-                toastr.success('Reserved!');
-                var startDetails = {
-                    from: "team@resourceful.com",
-                    to: added.email,
-                    subject: "Reservation Starting!",
-                    text: "Hello, your reservation is starting now!",
-                    date: added.start
-                }
-                var endDetails = {
-                        from: "team@resourceful.com",
-                        to: added.email,
-                        subject: "Reservation Starting!",
-                        text: "Hello, your reservation is ending now!",
-                        date: added.end
-                }
-                // async callback to add key to database
-                Meteor.call('scheduleMail', startDetails, function (error, result) {
-                    if (!error) {
-                        Reservations.update(added, {
-                            startId: result
-                        });
-                    }
-                });
-                Meteor.call('scheduleMail', endDetails, function (error, result) {
-                    if (!error) {
-                        Reservations.update(added, {
-                            endId: result
-                        });
-                    }
-                });
-
-            }
-        }
-    }
-}
-
-AutoForm.addHooks('insertReservationForm', reserveHooks);
-
-
-
 Template.resource.helpers({
     calendarHeader: function () {
         return {
@@ -82,14 +5,6 @@ Template.resource.helpers({
             center: 'title',
             right: 'month,agendaWeek,agendaDay'
         }
-    },
-    canReserve: function () {
-        if (_.contains(Resources.findOne(Router.current().params._id).canReserve, Meteor.user())) {
-            return true;
-        }
-        else{
-            return false;
-        }          
     },
     events: function () {
         var fc = $('.fc');
@@ -105,13 +20,25 @@ Template.resource.helpers({
             var reserves = Reservations.find({
                 resourceId: Router.current().params._id
             }).map(function (it) {
+                if(it.approved){
                 return {
-                    title: "Reserved by " + it.email,
+                    title: it.name + " reserved by " + it.email,
                     id: it._id,
                     creator: it.userId,
                     start: it.start,
-                    end: it.end
+                    end: it.end,
+                    color: "green"
                 };
+                } else{
+                    return {
+                    title: it.name + " reserved by " + it.email,
+                    id: it._id,
+                    creator: it.userId,
+                    start: it.start,
+                    end: it.end,
+                    color: "red"
+                    }
+                }
             });
             callback(reserves);
         };
@@ -120,7 +47,7 @@ Template.resource.helpers({
         return function (calEvent, jsEvent, view) {
             // Check if authorized
             if (Roles.userIsInRole(Meteor.user(), ['admin','reservationManager']) || calEvent.userId == Meteor.userId()) {
-                Router.go('reservation', {
+                Router.go('editreservation', {
                     _id: calEvent.id
                 });
 

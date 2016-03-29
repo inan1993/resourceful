@@ -8,12 +8,7 @@ Template.login.events({
         var passVar = event.target.password.value;
         Meteor.loginWithPassword(emailVar, passVar, function (err) {
             if (Meteor.user()) {
-<<<<<<< HEAD
-                console.log("logged");
                 Router.go('/');
-=======
-                Router.go('');
->>>>>>> d318e9abdea2a033fb3dd37d557c38978f97bcb1
             } else {
                 console.log(err.reason);
                 toastr.error(err.reason);

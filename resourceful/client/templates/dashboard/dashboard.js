@@ -36,6 +36,10 @@ Template.dashboard.events({
         event.preventDefault();
         Router.go('users');
     },
+    'click #reserve': function (event) {
+        event.preventDefault();
+        Router.go('reservation');
+    },
     'click #groups': function (event) {
         event.preventDefault();
         Router.go('groupslist');

@@ -1,7 +1,11 @@
-var reservationHooks = {
+var reserveHooks = {
     before: {
-        update: function (doc) {
-            if (Reservations.findOne({
+        insert: function (doc) {
+        console.log(doc);
+        for (i = 0; i < doc.resourceId.length; i++) { 
+            currResource = doc.resourceId[i];
+            console.log("resource" + i + " " +currResource);
+            reserve = Reservations.findOne({
                     $and: [{
                         start: {
                             $lte: doc.end
@@ -11,43 +15,51 @@ var reservationHooks = {
                             $gte: doc.start
                         }
                     }, {
-                        resourceId: Router.current().params._id
+                        resourceId: currResource
                     }]
-                })) {
-                toastr.error('Already reserved!');
+                });
+                if(reserve) {
+                // Now we have every reservation that overlaps on the current resource.
+                // a fatal error occurs if this is an unrestricted resource and any other resource in the reservation is                        restricted, or if this is a restricted resource that has been approved
+                console.log(reserve)
+                
+                toastr.error('One or more resources already reserved or pending!');
                 return false;
             }
-            if(_.contains(Resources.findOne(Router.current().params._id))){
-                if (_.contains(Resources.findOne(Router.current().params._id).cannotReserve, Meteor.user().emails[0].address)) {
-                    toastr.error('You cant reserve this!');
-                    return false;
-                }
-             }
+            
+        }
+            if (Meteor.userId()) {
+                doc.userId = Meteor.userId();
+                doc.email = Meteor.user().emails[0].address;  
+            }
+            console.log(doc);
             return doc;
         }
+
     },
     after: {
-        update: function (error, result) {
+        insert: function (error, result) {
             if (error) {
+                console.log("I was called!")
                 toastr.error(error);
                 console.log(error);
             } else {
-                console.log("Updated!");
-                var added = Reservations.findOne(Router.current().params._id);
-                Meteor.call('cancelMail', added.startEmailId);
-                Meteor.call('cancelMail', added.endEmailId);
+                var added = Reservations.findOne({
+                    _id: result
+                });
+                toastr.success('Reserved!');
                 var startDetails = {
                     from: "team@resourceful.com",
                     to: added.email,
                     subject: "Reservation Starting!",
-                    text: "Hello, your updated reservation is starting now!",
+                    text: "Hello, your reservation is starting now!",
                     date: added.start
                 }
                 var endDetails = {
                         from: "team@resourceful.com",
                         to: added.email,
                         subject: "Reservation Starting!",
-                        text: "Hello, your updated upreservation is ending now!",
+                        text: "Hello, your reservation is ending now!",
                         date: added.end
                 }
                 // async callback to add key to database
@@ -65,30 +77,19 @@ var reservationHooks = {
                         });
                     }
                 });
-                console.log(Reservations.findOne(Router.current().params._id));
-                toastr.success('Updated reservation!')
-                Router.go('resource', {
-                    _id: Reservations.findOne(Router.current().params._id).resourceId
-                });
+
             }
         }
     }
 }
 
-AutoForm.addHooks('updateReservationForm', reservationHooks);
+AutoForm.addHooks('insertReservationForm', reserveHooks);
+
 
 Template.reservation.helpers({
-    onSuccess: function () {
-        return function (result) {
-            toastr.success("Deleted!");
-        };
-    },
-    beforeRemove: function () {
-        return function (collection, id) {
-            Router.go('resource', {
-                _id: Reservations.findOne(Router.current().params._id).resourceId
-            });
-            this.remove();
-        };
+    optionsHelper: function () {
+        return Resources.find({}).map(function (u){
+            return {label: u.name, value: u._id};
+        });
     }
 });
