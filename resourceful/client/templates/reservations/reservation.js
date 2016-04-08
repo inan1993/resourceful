@@ -1,7 +1,7 @@
 var reserveHooks = {
     before: {
         insert: function (doc) {
-            console.log(doc);
+            console.log
             immediateApprove = true;
             if(!doc.resourceId){
                 toastr.error("Please select a resource")
@@ -79,7 +79,21 @@ var reserveHooks = {
                 var added = Reservations.findOne({
                     _id: result
                 });
-                toastr.success('Reserved!');
+                console.log("Below should have elem")
+                output = Resources.find({
+                    $and: [ {_id: {$in: added.resourceId}}, {restricted: true}]
+                }).fetch();
+                console.log(output);
+                console.log("HELLO")
+                console.log(added.resourceId);
+                console.log("HELLO")
+                if(output.length != 0){
+                    toastr.warning('Waiting for approval!');
+                }
+                else{
+                    toastr.success('Reserved!');
+                }
+                
                 // update reservation's "approved" status
                 // The wild west argument is only about approval.
                 // if you're the last needed approval, change reservation status to approved and cancel all competing reservations

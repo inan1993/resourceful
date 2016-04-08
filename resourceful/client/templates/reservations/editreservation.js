@@ -4,6 +4,7 @@ var reservationHooks = {
             current = Reservations.findOne({_id: Router.current().params._id});
             if( (current.end<doc.$set.end || current.start<doc.$set.start) && current.approved ){
                 if(confirm("You can only reduce the span of an approved reservation. Make a new reservation?")){
+                    console.log("going, sending " + Router.current().params._id)
                    Router.go('reservation', {
                         _id: Router.current().params._id
                     });

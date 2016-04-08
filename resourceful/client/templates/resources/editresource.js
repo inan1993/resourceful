@@ -1,17 +1,19 @@
 var resourceHooks = {
-    before:{
-        update: function(doc){
-            resource = Resources.findOne({_id: doc.$set._id});
-            if(!doc.$set.restricted && resource.restricted){
-                out = Reservations.find({resourceId: {$in: [resource._id]}}).fetch()
-                for(i=0; i<out.length; i++){
-                    Meteor.call("checkApprovals", out[i]);
-                }
-            }
-        }
-    },
+//    before:{
+//        update: function(doc){
+//            console.log("Update attempted")
+////            resource = Resources.findOne({_id: doc.$set._id});
+////            if(!doc.$set.restricted && resource.restricted){
+////                out = Reservations.find({resourceId: {$in: [resource._id]}}).fetch()
+////                for(i=0; i<out.length; i++){
+////                    Meteor.call("checkApprovals", out[i]);
+////                }
+////            }
+//        }
+//    },
     after: {
         update: function (error, result) {
+            console.log("Update completed")
             if (error) {
                 toastr.error(error);
                 console.log(error);
@@ -29,6 +31,7 @@ Template.editresource.helpers({
     onSuccess: function () {
         return function (result) {
             toastr.success("Removed Resource!");
+            Router.go('dashboard');
         };
     },
     beforeRemove: function () {
@@ -44,7 +47,7 @@ Template.editresource.helpers({
                 }
             }
             else{
-                Router.go('dashboard');
+                this.remove();
             }
         };
     },
