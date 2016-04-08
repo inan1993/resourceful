@@ -173,7 +173,6 @@ Router.route('/newreservation',{
     name: 'reservation'
 });
 
-
 Router.route('/resource/:_id/edit', {
     name: 'editresource',
     data: function () {
