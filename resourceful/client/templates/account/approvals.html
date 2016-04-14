@@ -2,7 +2,7 @@
 <div class="row">
         <h3>Awaiting Approval</h3>
         {{#each getResources}}
-        <h3>{{resource.name}}</h3>
+        <h3>{{name}}</h3>
         <div class="list-group">
             {{#each getReservations}}
             <div class="list-group-item">
@@ -12,8 +12,8 @@
                 <p> Requested from {{start}} until {{end}}</p>
                 </div>
                 <div class="col-xs-4">
-                <button type="button" class="btn btn-success" id="approve">Approve</button>
-                <button type="button" class="btn btn-danger" id="reject">Reject</button>
+                <button type="button" class="btn btn-success approve" id={{../_id}}>Approve</button>
+                <button type="button" class="btn btn-danger reject" id={{../_id}}>Reject</button>
                 </div>
                 </div>
             </div>

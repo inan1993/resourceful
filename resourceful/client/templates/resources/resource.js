@@ -46,12 +46,32 @@ Template.resource.helpers({
     onEventClicked: function () {
         return function (calEvent, jsEvent, view) {
             // Check if authorized
-            if (Roles.userIsInRole(Meteor.user(), ['admin','reservationManager']) || calEvent.userId == Meteor.userId()) {
+            if (Roles.userIsInRole(Meteor.user(), ['admin','reservationManager']) || calEvent.userId == Meteor.userId() || Groups.findOne({$and: [{
+                members: {
+                    $in: [Meteor.user()._id]
+                }
+                    }, {
+                reservationManagers: true
+                    }]})) {
                 Router.go('editreservation', {
                     _id: calEvent.id
                 });
 
             }
+        }
+    },
+    isResourceManager: function (){
+        if(Roles.userIsInRole(Meteor.user(), ['admin', 'resourceManager']) || Groups.findOne({$and: [{
+                members: {
+                    $in: [Meteor.user()._id]
+                }
+                    }, {
+                resourceManagers: true
+                    }]})){
+            return true;
+        }
+        else{
+            return false;
         }
     }
 });

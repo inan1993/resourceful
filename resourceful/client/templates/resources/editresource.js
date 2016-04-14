@@ -1,6 +1,19 @@
 var resourceHooks = {
+//    before:{
+//        update: function(doc){
+//            console.log("Update attempted")
+////            resource = Resources.findOne({_id: doc.$set._id});
+////            if(!doc.$set.restricted && resource.restricted){
+////                out = Reservations.find({resourceId: {$in: [resource._id]}}).fetch()
+////                for(i=0; i<out.length; i++){
+////                    Meteor.call("checkApprovals", out[i]);
+////                }
+////            }
+//        }
+//    },
     after: {
         update: function (error, result) {
+            console.log("Update completed")
             if (error) {
                 toastr.error(error);
                 console.log(error);
@@ -18,22 +31,22 @@ Template.editresource.helpers({
     onSuccess: function () {
         return function (result) {
             toastr.success("Removed Resource!");
+            Router.go('dashboard');
         };
     },
     beforeRemove: function () {
         return function (collection, id) {
-            if(Reservations.findOne({resourceId: Router.current().params._id})){
+            if(Reservations.findOne({resourceId: {$in: [Router.current().params._id]}})){
                 if (confirm('The resource has a reservation. Delete anyway?')) {
                     //TODO: remove the old reservations
+                    Reservations.remove({resourceId: {$in: [Router.current().params._id]}});
                     Router.go('dashboard');
-                    this.remove();
                 } 
                 else{
                     return false;
                 }
             }
             else{
-                Router.go('dashboard');
                 this.remove();
             }
         };
