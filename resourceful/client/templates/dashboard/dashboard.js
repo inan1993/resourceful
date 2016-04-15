@@ -43,11 +43,12 @@ function checkUserManager() {
 
 Template.dashboard.helpers({
     getResources: function () {
-        return TagsSearch.getData({
-            sort: {
-                isoScore: 1
-            }
-        });
+        return Resources.find({canView: {$in: [ Meteor.userId() ]}}, options).fetch();
+        // return TagsSearch.getData({
+        //     sort: {
+        //         isoScore: 1
+        //     }
+        // });
     },
     isManager: function () {
         return checkResourceManager() || checkUserManager();
