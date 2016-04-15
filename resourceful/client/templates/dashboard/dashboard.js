@@ -36,7 +36,7 @@ function checkUserManager() {
                     }]})){
             return true;
         }
-        else{
+        else{ 
             return false;
         }
 }
