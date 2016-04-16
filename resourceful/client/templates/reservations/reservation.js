@@ -83,15 +83,13 @@ var reserveHooks = {
                 output = Resources.find({
                     $and: [ {_id: {$in: added.resourceId}}, {restricted: true}]
                 }).fetch();
-                console.log(output);
-                console.log("HELLO")
-                console.log(added.resourceId);
-                console.log("HELLO")
+
                 if(output.length != 0){
                     toastr.warning('Waiting for approval!');
                 }
                 else{
                     toastr.success('Reserved!');
+                    Router.go('dashboard');
                 }
                 
                 // update reservation's "approved" status
@@ -102,14 +100,14 @@ var reserveHooks = {
                     from: "team@resourceful.com",
                     to: added.email,
                     subject: "Reservation Starting!",
-                    text: "Hello, your reservation is starting now!",
+                    text: "Hello, your reservation, "+added.name+" is starting now!\n",
                     date: added.start
                 }
                 var endDetails = {
                         from: "team@resourceful.com",
                         to: added.email,
                         subject: "Reservation Starting!",
-                        text: "Hello, your reservation is ending now!",
+                        text: "Hello, your reservation, "+added.name+" is ending now!",
                         date: added.end
                     }
                     // async callback to add key to database
