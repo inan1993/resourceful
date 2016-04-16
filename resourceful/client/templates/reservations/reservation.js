@@ -100,7 +100,7 @@ var reserveHooks = {
                     from: "team@resourceful.com",
                     to: added.email,
                     subject: "Reservation Starting!",
-                    text: "Hello, your reservation, "+added.name+" is starting now!\n",
+                    text: "Hello, your reservation, "+added.name+" is starting now!\n Description: "+added.description,
                     date: added.start
                 }
                 var endDetails = {
