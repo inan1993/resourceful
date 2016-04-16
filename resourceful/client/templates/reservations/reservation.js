@@ -164,5 +164,16 @@ Template.reservation.helpers({
                 value: u._id
             };
         });
+    },
+    today: function() {
+        var today = new Date();
+        today.toLocaleTimeString(navigator.language, {hour: '2-digit', minute:'2-digit'});
+        return today;
+    },
+    tomorrow: function() {
+        var tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        tomorrow.toLocaleTimeString(navigator.language, {hour: '2-digit', minute:'2-digit'});
+        return tomorrow;
     }
 });
