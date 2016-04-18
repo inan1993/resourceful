@@ -1,21 +1,6 @@
 var reserveHooks = {
     before: {
         insert: function (doc) {
-<<<<<<< HEAD
-        console.log(doc);
-        if(typeof doc.resourceId == "undefined"){
-            toastr.error('no resource selected');
-            return false;
-        }
-        doc.approved = true;
-        for (i = 0; i < doc.resourceId.length; i++) { 
-            currResource = doc.resourceId[i];
-            console.log("resource" + i + " " +currResource);
-            if(Resources.findOne({_id:currResource}).restricted){
-                doc.approved = false;
-            }
-            reserve = Reservations.findOne({
-=======
             console.log
             immediateApprove = true;
             if(!doc.resourceId){
@@ -26,7 +11,6 @@ var reserveHooks = {
                 currResource = doc.resourceId[i];
                 console.log("resource" + i + " " + currResource);
                 reserve = Reservations.findOne({
->>>>>>> master
                     $and: [{
                         start: {
                             $lte: doc.end
@@ -41,15 +25,10 @@ var reserveHooks = {
                         approved: true
                     }]
                 });
-<<<<<<< HEAD
-
-                if(reserve) {
                 // Now we have every reservation that overlaps on the current resource.
                 // a fatal error occurs if this is an unrestricted resource and any other resource in the reservation is                        restricted, or if this is a restricted resource that has been approved
-=======
             // this means theres an overlap with an already granted reservation - reject this one
             if(reserve) {
->>>>>>> master
                 console.log(reserve)
                 toastr.error('One or more resources already reserved!');
                 return false;
