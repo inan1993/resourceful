@@ -35,6 +35,7 @@ Template.login.events({
         console.log("logging out");
         event.preventDefault();
         Meteor.logout();
+        // Meteor.call("logOutOAuthUser", Meteor.userId());
         Router.go('/');
     }
 });

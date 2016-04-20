@@ -23,7 +23,7 @@ Router.route('oauth', {
        hashsplit = hash.split("&", 1).toString();
        token = hashsplit.split("=");
        token = token[1];
-
+       console.log("Token - "+ token);
        //getNetid defined in oauthserver.js
        try{
          Meteor.call("getNetid", token, function(error, result){
@@ -98,28 +98,6 @@ Router.onBeforeAction(function(){
   only: ['resource']
 });
 
-//Router.onBeforeAction(function(){
-//    
-//        if(Roles.userIsInRole(Meteor.user(), ['admin','resourceManager'])){
-//            this.next();
-//        }
-//        else{
-//            this.render('forbidden');
-//        }
-//    }, {
-//  only: ['editresource']
-//});
-
-//Router.onBeforeAction(function(){
-//        if(Roles.userIsInRole(Meteor.user(), ['admin','user']) || Meteor.user()._id == Reservations.findOne(Router.current().params._id).userId){
-//            this.next();
-//        }
-//        else{
-//            this.render('forbidden');
-//        }
-//    }, {
-//  only: ['editreservation']
-//});
 
 Router.onBeforeAction(function(){
         if(Reservations.findOne({_id: this.params._id})){
