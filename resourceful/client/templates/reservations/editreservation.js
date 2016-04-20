@@ -88,7 +88,82 @@ var reservationHooks = {
         }
     }
 }
+Template.editreservation.onRendered(function () {
+    // get top level resources you can view
 
+    var topLevel = Resources.find({
+        $and: [{
+                canView: {
+                    $in: [Meteor.userId()]
+                }
+            }, {
+                canReserve: {
+                    $in: [Meteor.userId()]
+                }
+               },
+            {
+                parentId: {
+                    $exists: false
+                }
+            }
+                              ]
+    }).fetch();
+    
+    console.log(topLevel);
+    var data = [];
+    for (i = 0; i < topLevel.length; i++) {
+        data.push(treeGenerator(topLevel[i]));
+    }
+    resources = Reservations.findOne(Router.current().params._id).resourceId;
+    
+    var $tree = $('#resTree');
+    this.$('#resTree').tree({
+        data: data,
+        autoOpen: true
+    });
+    for(z = 0; z<resources.length; z++){
+        var node = $tree.tree('getNodeById', resources[z]);
+        $tree.tree('addToSelection', node);
+    }
+    this.$('#resTree').bind(
+        'tree.click',
+        function (e) {
+            // Disable single selection
+            e.preventDefault();
+        }
+    );
+});
+
+function treeGenerator(node) {
+    var data = {
+        label: node.name,
+        id: node._id,
+        children: []
+    };
+    console.log("data below");
+    console.log(data);
+    myChildren = Resources.find({
+        $and: [
+            {
+                canView: {
+                    $in: [Meteor.userId()]
+                }
+            },
+            {
+                parentId: node._id
+        }, {
+                canReserve: {
+                    $in: [Meteor.userId()]
+                }
+        }
+    ]
+    }).fetch();
+    
+    for (k = 0; k < myChildren.length; k++) {
+        data.children.push(treeGenerator(myChildren[k]));
+    }
+    return data;
+}
 AutoForm.addHooks('updateReservationForm', reservationHooks);
 
 Template.editreservation.helpers({
