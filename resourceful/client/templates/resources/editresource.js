@@ -40,6 +40,7 @@ Template.editresource.helpers({
                 if (confirm('The resource has a reservation. Delete anyway?')) {
                     //TODO: remove the old reservations
                     Reservations.remove({resourceId: {$in: [Router.current().params._id]}});
+                    this.remove();
                     Router.go('dashboard');
                 } 
                 else{

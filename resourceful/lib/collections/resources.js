@@ -30,5 +30,16 @@ Resources.attachSchema(new SimpleSchema({
         type: [String],
         label: "Can View",
         optional: true
+    },
+    sharing: {
+        type: String,
+        allowedValues: ['exclusive', 'limited', 'unlimited']
+    },
+    limit: {
+        type: Number,
+        min: 2,
+        defaultValue: 2,
+        label: "Reservation Limit",
+        optional: true
     }
 }));

@@ -72,14 +72,8 @@ Meteor.methods({
         }
         // if we make it to here, update reservation to approved
         if (willApprove) {
-            Reservations.update({
-                _id: reservationId
-            }, {
-                $set: {
-                    approved: true
-                }
-            });
-            // reject all competing reservations
+            
+            // reject all competing reservations, if num reservations now greater than allowed
             toCancel = Reservations.find({
                 $and: [{
                         start: {
@@ -100,11 +94,50 @@ Meteor.methods({
                         _id: {
                             $ne: reservation._id
                         }
-                    }]
+                    }
+               ]
             }).fetch();
+            
             toCancel = _.uniq(toCancel);
             console.log("Cancelling");
             for (var j = 0; j < toCancel.length; j++) {
+                shouldCancel = false;
+                
+                for(var k = 0; k < toCancel[j].resourceId.length; k++){
+                    currId = toCancel[j].resourceId[k];
+                    // Check if this resource is either 
+                    res = Resources.findOne({currId});
+                    reservationCount = Reservations.find({
+                    $and: [{
+                        start: {
+                            $lte: toCancel[j].end
+                        }
+                    }, {
+                        end: {
+                            $gte: toCancel[j].start
+                        }
+                    }, {
+                        resourceId: currId
+                    }, {
+                        approved: true
+                    }]
+                }).fetch();
+                    if((res.sharing == "limited" && reservationCount.length < res.limit) || (res.sharing == "unlimited") || (res.sharing == "exclusive" && reservationCount.length ==0)){
+                        // then this reservation is ok, so far
+                    }
+                    else{
+                        shouldCancel = true;
+                        break;
+                    }
+                }
+                if(!shouldCancel){
+                    toCancel.splice(j, 1);
+                }
+            }
+            
+            for (var j = 0; j < toCancel.length; j++) {
+                // TODO if resource is limited and under the limit or if resource is unlimited, don't cancel
+                
                 rejectReservation(toCancel[j]._id);
             }
         }

@@ -3,14 +3,25 @@ var reserveHooks = {
         insert: function (doc) {
             console.log
             immediateApprove = true;
+            
             if(!doc.resourceId){
                 toastr.error("Please select a resource")
                     return false;
             }
             for (i = 0; i < doc.resourceId.length; i++) {
+               
+                
                 currResource = doc.resourceId[i];
+                 myRes = Resources.findOne({_id: currResource});
+                // check if you can reserve the resource here
+                if(!(_.contains(myRes.canReserve, Meteor.userId()))){
+                    toaster.error("You don't have permission to reserve this!");
+                    return false;
+                }
+                 // Check if I have requisite permission
                 console.log("resource" + i + " " + currResource);
-                reserve = Reservations.findOne({
+                
+                reserve = Reservations.find({
                     $and: [{
                         start: {
                             $lte: doc.end
@@ -24,14 +35,23 @@ var reserveHooks = {
                     }, {
                         approved: true
                     }]
-                });
-            // this means theres an overlap with an already granted reservation - reject this one
-            if(reserve) {
-                console.log(reserve)
-                toastr.error('One or more resources already reserved!');
-                return false;
-            }
-            myRes = Resources.findOne({_id: currResource});
+                }).fetch();
+                reserve = _.uniq(reserve);
+                if(myRes.sharing == "limited"){
+                    console.log("limited");
+                    if(reserve.length >= myRes.limit){
+                        toastr.error("Resource "+myRes.name+ " limited to " + myRes.limit +" reservations!");
+                        return false;
+                    }
+                }
+                if(myRes.sharing == "exclusive"){
+                    console.log("exclusive");
+                    if(reserve.length >= 1){
+                        toastr.error("Resource "+myRes.name+ " limited to 1 reservation!");
+                        return false;
+                    }
+                }
+           
             if(!myRes.restricted){
             wildWest = Reservations.findOne({
                     $and: [{
@@ -84,9 +104,6 @@ var reserveHooks = {
                     $and: [ {_id: {$in: added.resourceId}}, {restricted: true}]
                 }).fetch();
                 console.log(output);
-                console.log("HELLO")
-                console.log(added.resourceId);
-                console.log("HELLO")
                 if(output.length != 0){
                     toastr.warning('Waiting for approval!');
                 }
@@ -97,7 +114,9 @@ var reserveHooks = {
                 // update reservation's "approved" status
                 // The wild west argument is only about approval.
                 // if you're the last needed approval, change reservation status to approved and cancel all competing reservations
-                Meteor.call("checkApprovals", result);
+                // Meteor.call("checkApprovals", result);
+                
+                
                 var startDetails = {
                     from: "team@resourceful.com",
                     to: added.email,
@@ -138,7 +157,7 @@ AutoForm.addHooks('insertReservationForm', reserveHooks);
 
 Template.reservation.helpers({
     optionsHelper: function () {
-        if (Roles.userIsInRole(Meteor.user(), ['resourceManager'] || Groups.findOne({
+        if (Roles.userIsInRole(Meteor.user(), ['reservationManager'] || Groups.findOne({
                 $and: [{
                     members: {
                         $in: [Meteor.user()._id]

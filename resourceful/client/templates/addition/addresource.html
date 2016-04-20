@@ -6,6 +6,10 @@
         {{> afQuickField name='description' rows=6}}
         {{> afQuickField name='tags'}}
         {{> afQuickField name='restricted'}}
+        {{> afQuickField name='sharing' options="allowed"}}
+        {{#if afFieldValueIs name="sharing" value="limited"}}
+            {{> afQuickField name="limit"}}
+        {{/if}}
         {{> afQuickField name='managers' options=optionsHelper}}
         {{> afQuickField name='canReserve' options=optionsHelper}}
         {{> afQuickField name='canView' options=optionsHelper}}
