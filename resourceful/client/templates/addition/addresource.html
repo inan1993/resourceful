@@ -10,6 +10,7 @@
         {{#if afFieldValueIs name="sharing" value="limited"}}
             {{> afQuickField name="limit"}}
         {{/if}}
+        {{> afQuickField name='parentId' options=parentHelper}}
         {{> afQuickField name='managers' options=optionsHelper}}
         {{> afQuickField name='canReserve' options=optionsHelper}}
         {{> afQuickField name='canView' options=optionsHelper}}

@@ -41,5 +41,10 @@ Resources.attachSchema(new SimpleSchema({
         defaultValue: 2,
         label: "Reservation Limit",
         optional: true
+    },
+    parentId: {
+        type: String,
+        label: "Parent",
+        optional: true
     }
 }));

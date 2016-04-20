@@ -80,6 +80,7 @@ modules-runtime@0.6.1
 momentjs:moment@2.10.6
 mongo@1.1.5
 mongo-id@1.0.2
+mrt:jqtree@0.19.0
 mrt:moment@2.8.1
 msavin:mongol@1.6.2
 nimble:restivus@0.8.5

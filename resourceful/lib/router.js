@@ -48,7 +48,7 @@ Router.route('oauth', {
 });
 
 Router.onBeforeAction(function(){
-        if (!Meteor.user()) {
+        if (!Meteor.user() && !Meteor.loggingIn()) {
             if(Meteor.users.find().count() == 0){
                 this.render('createadmin');
             }
