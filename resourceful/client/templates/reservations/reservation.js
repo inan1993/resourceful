@@ -85,7 +85,6 @@ var reserveHooks = {
                 console.log("immed approve");
                 doc.approved = true;
             }
-            console.log(doc);
             return doc;
         }
 
@@ -94,8 +93,8 @@ var reserveHooks = {
         insert: function (error, result) {
             if (error) {
                 toastr.error(error);
-                console.log(error);
             } else {
+                console.log("I was called!")
                 var added = Reservations.findOne({
                     _id: result
                 });
@@ -103,12 +102,13 @@ var reserveHooks = {
                 output = Resources.find({
                     $and: [ {_id: {$in: added.resourceId}}, {restricted: true}]
                 }).fetch();
-                console.log(output);
+
                 if(output.length != 0){
                     toastr.warning('Waiting for approval!');
                 }
                 else{
                     toastr.success('Reserved!');
+                    Router.go('dashboard');
                 }
                 
                 // update reservation's "approved" status
@@ -121,14 +121,14 @@ var reserveHooks = {
                     from: "team@resourceful.com",
                     to: added.email,
                     subject: "Reservation Starting!",
-                    text: "Hello, your reservation is starting now!",
+                    text: "Hello, your reservation, "+added.name+" is starting now!\n Description: "+added.description,
                     date: added.start
                 }
                 var endDetails = {
                         from: "team@resourceful.com",
                         to: added.email,
                         subject: "Reservation Starting!",
-                        text: "Hello, your reservation is ending now!",
+                        text: "Hello, your reservation, "+added.name+" is ending now!",
                         date: added.end
                     }
                     // async callback to add key to database
@@ -183,5 +183,16 @@ Template.reservation.helpers({
                 value: u._id
             };
         });
+    },
+    today: function() {
+        var today = new Date();
+        today.toLocaleTimeString(navigator.language, {hour: '2-digit', minute:'2-digit'});
+        return today;
+    },
+    tomorrow: function() {
+        var tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        tomorrow.toLocaleTimeString(navigator.language, {hour: '2-digit', minute:'2-digit'});
+        return tomorrow;
     }
 });

@@ -4,7 +4,7 @@ Template.login.events({
     'submit #login-form': function (event) {
         event.preventDefault();
         // Auto-encrypts password, logs user in if successful
-        var emailVar = event.target.email.value;
+        var emailVar = event.target.email.value.trim();
         var passVar = event.target.password.value;
         Meteor.loginWithPassword(emailVar, passVar, function (err) {
             if (Meteor.user()) {
