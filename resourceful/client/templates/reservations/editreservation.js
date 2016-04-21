@@ -121,7 +121,7 @@ Template.editreservation.onRendered(function () {
         data: data,
         autoOpen: true
     });
-    for(z = 0; z<resources.length; z++){
+    for(var z = 0; z<resources.length; z++){
         var node = $tree.tree('getNodeById', resources[z]);
         $tree.tree('addToSelection', node);
     }
@@ -159,7 +159,7 @@ function treeGenerator(node) {
     ]
     }).fetch();
     
-    for (k = 0; k < myChildren.length; k++) {
+    for (var k = 0; k < myChildren.length; k++) {
         data.children.push(treeGenerator(myChildren[k]));
     }
     return data;
