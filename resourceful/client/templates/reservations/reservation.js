@@ -192,11 +192,7 @@ Template.reservation.onRendered(function () {
     console.log(topLevel);
     var data = [];
     for (i = 0; i < topLevel.length; i++) {
-        console.log("top "+topLevel.length);
         data.push(treeGenerator(topLevel[i]));
-        console.log("top "+topLevel.length + " " +i);
-        
-        console.log("ran");
     }
     console.log(data);
     console.log("HELLO")
@@ -236,7 +232,8 @@ function treeGenerator(node) {
     };
     console.log("data below");
     console.log(data);
-    myChildren = Resources.find({
+     console.log("kids")
+    var myChildren = Resources.find({
         $and: [
             {
                 canView: {
@@ -252,8 +249,10 @@ function treeGenerator(node) {
         }
     ]
     }).fetch();
-    
-    for (k = 0; k < myChildren.length; k++) {
+    console.log("kids are below");
+    console.log(myChildren);
+   
+    for (var k = 0; k < myChildren.length; k++) {
         data.children.push(treeGenerator(myChildren[k]));
     }
     return data;
