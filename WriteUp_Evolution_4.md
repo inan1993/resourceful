@@ -50,6 +50,6 @@ Finally, I would like to again comment on our use of IronRouter as a design choi
 
 Greg McKeon completed requirements 1(a), 1(b), 1(c) on only the local accounts, 1(d), 1(e), 1(f), 2(a), 2(b), 2(c), 2(d), 2(e), 2(f), 3(a), 3(b), 3(c), 5(a), 5(b), 6(a), 6(b), 6(c), 6(d), 6(e) except for the email, 7(a), 7(b), 7(c), 8(a), 8(b), 8(c), 8(d), 8(e) and helped with documentation for evolutions 3 and 4.  He added a net of about 2500 lines of code to the project, and was responsible for most of the design choices made throughout.
 
-Inan: API, OAuth, User profile, Group permissions, Calender view of multiple resources, Depoyment and Testing, Search, Routing, Data Source, some email setup, bug fixes, UI. Worked on design decisions and planning.
+Inan: API, OAuth, User profile, Group permissions, Calender view of resources, Depoyment and Testing, Search, Routing, Data Source, some email setup, bug fixes, UI. Worked on design decisions and planning.
 
 Sharrin Manor worked on OAuth, API, testing, the write-ups. 
