@@ -2,8 +2,7 @@
 ### A resource reservation system for ECE 458: Engineering Software for Maintainability 
 
 > Instructions:
-- URL: https://resourceful.meteor.com/
-- Credentials: admin@admin.com, password: admin
+- URL: https://resourceful_ev4.mod.bz/
 
 ## Team Logistics
 inantainwala@gmail.com
