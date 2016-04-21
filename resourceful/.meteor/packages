@@ -42,3 +42,5 @@ nimble:restivus@=0.8.5
 ejson
 standard-minifier-css
 standard-minifier-js
+mizzao:jquery-ui
+mrt:jqtree

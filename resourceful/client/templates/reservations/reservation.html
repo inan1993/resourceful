@@ -3,11 +3,12 @@
             <fieldset>
                 <legend>Add a Reservation</legend>
                 {{> afQuickField name="name"}}
-                {{> afQuickField name="start" type='datetime-local'}}
-                {{> afQuickField name="end" type='datetime-local'}}
+                {{> afQuickField name="start" type='datetime-local' value=today}}
+                {{> afQuickField name="end" type='datetime-local' value=tomorrow}}
                 {{> afQuickField name='description' rows=6}}
-                {{> afQuickField name="resourceId" type='select-multiple' options=optionsHelper}}
             </fieldset>
+            <label class = "control-label">Requested Resources</label>
+            <div id="resTree"></div>
             <button type="submit" class="btn btn-primary">Reserve!</button>
             {{/autoForm}}
 </template>

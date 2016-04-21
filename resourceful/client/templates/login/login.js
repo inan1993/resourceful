@@ -4,7 +4,7 @@ Template.login.events({
     'submit #login-form': function (event) {
         event.preventDefault();
         // Auto-encrypts password, logs user in if successful
-        var emailVar = event.target.email.value;
+        var emailVar = event.target.email.value.trim();
         var passVar = event.target.password.value;
         Meteor.loginWithPassword(emailVar, passVar, function (err) {
             if (Meteor.user()) {
@@ -27,7 +27,7 @@ Template.login.events({
         + "&response_type=token"
         + "&redirect_uri=" + 
                             // "http://localhost:3000/oauth"; 
-                            "https://resourceful-60861.onmodulus.net/oauth";
+                            "https://resourcefulev4-62086.onmodulus.net/oauth";
      
     },
 
@@ -35,6 +35,7 @@ Template.login.events({
         console.log("logging out");
         event.preventDefault();
         Meteor.logout();
+        // Meteor.call("logOutOAuthUser", Meteor.userId());
         Router.go('/');
     }
 });
