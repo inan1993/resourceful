@@ -13,6 +13,9 @@ Meteor.methods({
     netid = datastring.substring(9, datastring.indexOf("duke.edu")+8);
     console.log("this is the authenticated netid: " + netid);
     return netid;
+  },
+  logOutOAuthUser: function(userId){
+    console.log("logout!!! - "+Meteor.users.update({_id: userId}, {$set : { "services.resume.loginTokens" : [] }}));
   }
 });
 
