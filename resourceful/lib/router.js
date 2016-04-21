@@ -14,7 +14,8 @@ Router.route('oauth', {
     name: 'oauth',
     onRun: function(){
       //take everything after the hashtag, which contains access_token that will be exchanged for netid
-     var hash = this.params.hash;
+    this.stop()
+    var hash = this.params.hash;
      if(hash == null){
         toastr.warning("Duke Authentication Failed!");
         this.render('landingpage');
