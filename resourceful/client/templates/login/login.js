@@ -27,7 +27,7 @@ Template.login.events({
         + "&response_type=token"
         + "&redirect_uri=" + 
                             // "http://localhost:3000/oauth"; 
-                            "https://resourcefulev4-62086.onmodulus.net/oauth";
+                            "https://resourceful_ev4.mod.bz/oauth";
      
     },
 
