@@ -22,7 +22,7 @@ Template.login.events({
         //window.location = "https://oauth.oit.duke.edu/oauth/authorize.php?client_id=ECE458_Resource_manager7&state=0.6590120431501418&response_type=token&redirect_uri=https://resourceful2.meteor.com/oauth";
         
          window.location = "https://oauth.oit.duke.edu/oauth/authorize.php"
-        + "?client_id=" + "resourceful"
+        + "?client_id=" + "resrouceful-ev4"
         + "&state=" + Math.random()
         + "&response_type=token"
         + "&redirect_uri=" + 
