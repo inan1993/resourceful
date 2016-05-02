@@ -26,7 +26,8 @@ Template.login.events({
         + "&state=" + Math.random()
         + "&response_type=token"
         + "&redirect_uri=" + 
-                            "http://localhost:3000/oauth"; 
+                            "https://resourceful_ev4.mod.bz/oauth";
+                            //"http://localhost:3000/oauth"; 
                             // "ec2-52-90-134-50.compute-1.amazonaws.com/oauth";
      
     },
